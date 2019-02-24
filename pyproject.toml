@@ -1,0 +1,55 @@
+[tool.black]
+line-length = 88
+py36 = true
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | \.vscode
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
+[tool.poetry]
+name = "aiodogstatsd"
+version = "0.1.0"
+description = "An asyncio-based client for sending metrics to StatsD with support of DogStatsD extension"
+authors = [
+    "Nikita Grishko <gr1n@protonmail.com>"
+]
+license = "MIT"
+
+readme = "README.md"
+
+homepage = "https://github.com/Gr1N/aiodogstatsd"
+repository = "https://github.com/Gr1N/aiodogstatsd"
+
+keywords = ["asyncio", "statsd", "statsd-client", "statsd-metrics", "dogstatsd"]
+
+classifiers = [
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+
+[tool.poetry.dependencies]
+python = ">=3.7"
+
+[tool.poetry.dev-dependencies]
+black = { version = ">=18.9b0", allows-prereleases = true }
+flake8 = ">=3.7.6"
+flake8-bugbear = ">=18.8.0"
+isort = ">=4.3.4"
+mypy = ">=0.670"
+pytest = ">=4.3.0"
+pytest-cov = ">=2.6.1"
+tox = ">=3.7.0"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
