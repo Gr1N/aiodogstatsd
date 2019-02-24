@@ -1,0 +1,11 @@
+version: '2'
+
+services:
+  stastd_exporter:
+    image: prom/statsd-exporter:v0.8.1
+    expose:
+      - 9125
+      - 9102
+    ports:
+      - 9125:9125/udp
+      - 9102:9102
