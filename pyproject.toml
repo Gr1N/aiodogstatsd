@@ -17,6 +17,20 @@ exclude = '''
 )/
 '''
 
+[tool.isort]
+combine_as_imports = true
+default_section = "LOCALFOLDER"
+force_grid_wrap = false
+include_trailing_comma = true
+known_first_party = "aiodogstatsd"
+known_standard_library = ""
+known_third_party = "pytest"
+line_length = 88
+multi_line_output = 3
+not_skip = "__init__.py"
+sections = "FUTURE,STDLIB,THIRDPARTY,FIRSTPARTY,LOCALFOLDER"
+skip = ".eggs,.tox,.venv,venv"
+
 [tool.poetry]
 name = "aiodogstatsd"
 version = "0.1.0"
@@ -44,7 +58,7 @@ python = ">=3.7"
 black = { version = ">=18.9b0", allows-prereleases = true }
 flake8 = ">=3.7.6"
 flake8-bugbear = ">=18.8.0"
-isort = ">=4.3.4"
+isort = { version = ">=4.3.5", extras = ["pyproject"] }
 mypy = ">=0.670"
 pytest = ">=4.3.0"
 pytest-cov = ">=2.6.1"
