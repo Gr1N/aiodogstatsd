@@ -10,7 +10,7 @@ async def main():
     )
     await client.connect()
 
-    for _ in range(500_000):
+    for _ in range(5000):
         client.timing("fire", value=random())
 
     await client.close()

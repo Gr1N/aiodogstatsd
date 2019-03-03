@@ -9,7 +9,18 @@ __all__ = ("Client",)
 
 
 class Client:
-    __slots__ = ("_host", "_port", "_namespace", "_constant_tags", "_protocol")
+    __slots__ = (
+        "_host",
+        "_port",
+        "_namespace",
+        "_constant_tags",
+        "_closing",
+        "_protocol",
+        "_queue",
+        "_queue_timeout",
+        "_listen_future",
+        "_listen_future_join",
+    )
 
     def __init__(
         self,
@@ -18,13 +29,21 @@ class Client:
         port: int = 9125,
         namespace: Optional[types.MNamespace] = None,
         constant_tags: Optional[types.MTags] = None,
+        queue_timeout: float = 0.5,
     ) -> None:
         self._host = host
         self._port = port
         self._namespace = namespace
         self._constant_tags = constant_tags or {}
 
+        self._closing = False
+
         self._protocol = DatagramProtocol()
+
+        self._queue: asyncio.Queue = asyncio.Queue()
+        self._queue_timeout = queue_timeout
+        self._listen_future: asyncio.Future
+        self._listen_future_join: asyncio.Future = asyncio.Future()
 
     async def connect(self) -> None:
         loop = asyncio.get_running_loop()
@@ -32,7 +51,14 @@ class Client:
             lambda: self._protocol, remote_addr=(self._host, self._port)
         )
 
+        self._listen_future = asyncio.ensure_future(self._listen())
+
     async def close(self) -> None:
+        self._closing = True
+
+        await self._listen_future_join
+        self._listen_future.cancel()
+
         await self._protocol.close()
 
     def gauge(
@@ -96,6 +122,21 @@ class Client:
     ) -> None:
         self._report(name, types.MType.TIMING, value, tags, sample_rate)
 
+    async def _listen(self) -> None:
+        while not self._closing:
+            await self._listen_and_send()
+
+        # Try to send remaining enqueued metrics if any
+        while not self._queue.empty():
+            await self._listen_and_send()
+        self._listen_future_join.set_result(True)
+
+    async def _listen_and_send(self) -> None:
+        coro = self._queue.get()
+        buf = await asyncio.wait_for(coro, timeout=self._queue_timeout)
+
+        self._protocol.send(buf)
+
     def _report(
         self,
         name: types.MName,
@@ -104,24 +145,27 @@ class Client:
         tags: Optional[types.MTags] = None,
         sample_rate: types.MSampleRate = 1,
     ) -> None:
+        # If client in closing state, then ignore any new incoming metric
+        if self._closing:
+            return
+
         if sample_rate != 1 and random() > sample_rate:
             return
 
         # Resolve full tags list
         all_tags = dict(self._constant_tags, **tags or {})
 
-        # Create metric packet
-        payload = protocol.build(
-            name=name,
-            namespace=self._namespace,
-            value=value,
-            type_=type_,
-            tags=all_tags,
-            sample_rate=sample_rate,
+        # Build and enqueue metric
+        self._queue.put_nowait(
+            protocol.build(
+                name=name,
+                namespace=self._namespace,
+                value=value,
+                type_=type_,
+                tags=all_tags,
+                sample_rate=sample_rate,
+            )
         )
-
-        # Send it
-        self._protocol.send(payload.encode())
 
 
 class DatagramProtocol(asyncio.DatagramProtocol):
