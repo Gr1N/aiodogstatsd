@@ -17,9 +17,9 @@ class Client:
         "_closing",
         "_protocol",
         "_queue",
-        "_queue_timeout",
         "_listen_future",
         "_listen_future_join",
+        "_read_timeout",
     )
 
     def __init__(
@@ -29,7 +29,7 @@ class Client:
         port: int = 9125,
         namespace: Optional[types.MNamespace] = None,
         constant_tags: Optional[types.MTags] = None,
-        queue_timeout: float = 0.5,
+        read_timeout: float = 0.5,
     ) -> None:
         self._host = host
         self._port = port
@@ -41,9 +41,10 @@ class Client:
         self._protocol = DatagramProtocol()
 
         self._queue: asyncio.Queue = asyncio.Queue()
-        self._queue_timeout = queue_timeout
         self._listen_future: asyncio.Future
         self._listen_future_join: asyncio.Future = asyncio.Future()
+
+        self._read_timeout = read_timeout
 
     async def connect(self) -> None:
         loop = asyncio.get_running_loop()
@@ -135,7 +136,7 @@ class Client:
         coro = self._queue.get()
 
         try:
-            buf = await asyncio.wait_for(coro, timeout=self._queue_timeout)
+            buf = await asyncio.wait_for(coro, timeout=self._read_timeout)
         except asyncio.TimeoutError:
             pass
         else:
