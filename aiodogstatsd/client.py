@@ -133,9 +133,13 @@ class Client:
 
     async def _listen_and_send(self) -> None:
         coro = self._queue.get()
-        buf = await asyncio.wait_for(coro, timeout=self._queue_timeout)
 
-        self._protocol.send(buf)
+        try:
+            buf = await asyncio.wait_for(coro, timeout=self._queue_timeout)
+        except asyncio.TimeoutError:
+            pass
+        else:
+            self._protocol.send(buf)
 
     def _report(
         self,
