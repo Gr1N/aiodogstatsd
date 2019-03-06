@@ -20,6 +20,7 @@ class Client:
         "_listen_future",
         "_listen_future_join",
         "_read_timeout",
+        "_close_timeout",
     )
 
     def __init__(
@@ -30,6 +31,7 @@ class Client:
         namespace: Optional[types.MNamespace] = None,
         constant_tags: Optional[types.MTags] = None,
         read_timeout: float = 0.5,
+        close_timeout: Optional[float] = None,
     ) -> None:
         self._host = host
         self._port = port
@@ -45,6 +47,7 @@ class Client:
         self._listen_future_join: asyncio.Future = asyncio.Future()
 
         self._read_timeout = read_timeout
+        self._close_timeout = close_timeout
 
     async def connect(self) -> None:
         loop = asyncio.get_running_loop()
@@ -57,6 +60,12 @@ class Client:
     async def close(self) -> None:
         self._closing = True
 
+        try:
+            await asyncio.wait_for(self._close(), timeout=self._close_timeout)
+        except asyncio.TimeoutError:
+            pass
+
+    async def _close(self) -> None:
         await self._listen_future_join
         self._listen_future.cancel()
 
