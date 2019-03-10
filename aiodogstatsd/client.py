@@ -33,6 +33,16 @@ class Client:
         read_timeout: float = 0.5,
         close_timeout: Optional[float] = None,
     ) -> None:
+        """
+        Initialize a client object.
+
+        You can pass host and port of the DogStatsD server, namespace to prefix all
+        metric names, constant tags to attach to all metrics.
+
+        Also, you can specify default read timeout which will be used to read messages
+        from an AsyncIO queue, and you can specify close timeout which will be used
+        as wait time for client closing.
+        """
         self._host = host
         self._port = port
         self._namespace = namespace
@@ -79,6 +89,9 @@ class Client:
         tags: Optional[typedefs.MTags] = None,
         sample_rate: typedefs.MSampleRate = 1,
     ) -> None:
+        """
+        Record the value of a gauge, optionally setting tags and a sample rate.
+        """
         self._report(name, typedefs.MType.GAUGE, value, tags, sample_rate)
 
     def increment(
@@ -89,6 +102,9 @@ class Client:
         tags: Optional[typedefs.MTags] = None,
         sample_rate: typedefs.MSampleRate = 1,
     ) -> None:
+        """
+        Increment a counter, optionally setting a value, tags and a sample rate.
+        """
         self._report(name, typedefs.MType.COUNTER, value, tags, sample_rate)
 
     def decrement(
@@ -99,6 +115,9 @@ class Client:
         tags: Optional[typedefs.MTags] = None,
         sample_rate: typedefs.MSampleRate = 1,
     ) -> None:
+        """
+        Decrement a counter, optionally setting a value, tags and a sample rate.
+        """
         value = -value if value else value
         self._report(name, typedefs.MType.COUNTER, value, tags, sample_rate)
 
@@ -110,6 +129,9 @@ class Client:
         tags: Optional[typedefs.MTags] = None,
         sample_rate: typedefs.MSampleRate = 1,
     ) -> None:
+        """
+        Sample a histogram value, optionally setting tags and a sample rate.
+        """
         self._report(name, typedefs.MType.HISTOGRAM, value, tags, sample_rate)
 
     def distribution(
@@ -120,6 +142,9 @@ class Client:
         tags: Optional[typedefs.MTags] = None,
         sample_rate: typedefs.MSampleRate = 1,
     ) -> None:
+        """
+        Send a global distribution value, optionally setting tags and a sample rate.
+        """
         self._report(name, typedefs.MType.DISTRIBUTION, value, tags, sample_rate)
 
     def timing(
@@ -130,6 +155,9 @@ class Client:
         tags: Optional[typedefs.MTags] = None,
         sample_rate: typedefs.MSampleRate = 1,
     ) -> None:
+        """
+        Record a timing, optionally setting tags and a sample rate.
+        """
         self._report(name, typedefs.MType.TIMING, value, tags, sample_rate)
 
     async def _listen(self) -> None:
