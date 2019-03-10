@@ -1,6 +1,6 @@
 import pytest
 
-from aiodogstatsd import protocol, types
+from aiodogstatsd import protocol, typedefs
 
 
 @pytest.mark.parametrize(
@@ -11,7 +11,7 @@ from aiodogstatsd import protocol, types
                 "name": "name_1",
                 "namespace": None,
                 "value": "value_1",
-                "type_": types.MType.COUNTER,
+                "type_": typedefs.MType.COUNTER,
                 "tags": {},
                 "sample_rate": 1,
             },
@@ -22,7 +22,7 @@ from aiodogstatsd import protocol, types
                 "name": "name_2",
                 "namespace": "namespace_2",
                 "value": "value_2",
-                "type_": types.MType.COUNTER,
+                "type_": typedefs.MType.COUNTER,
                 "tags": {"tag_key_1": "tag_value_1", "tag_key_2": "tag_value_2"},
                 "sample_rate": 0.5,
             },

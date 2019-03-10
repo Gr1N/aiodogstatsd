@@ -3,7 +3,7 @@ from asyncio.transports import DatagramTransport
 from random import random
 from typing import Optional
 
-from aiodogstatsd import protocol, types
+from aiodogstatsd import protocol, typedefs
 
 __all__ = ("Client",)
 
@@ -28,8 +28,8 @@ class Client:
         *,
         host: str = "localhost",
         port: int = 9125,
-        namespace: Optional[types.MNamespace] = None,
-        constant_tags: Optional[types.MTags] = None,
+        namespace: Optional[typedefs.MNamespace] = None,
+        constant_tags: Optional[typedefs.MTags] = None,
         read_timeout: float = 0.5,
         close_timeout: Optional[float] = None,
     ) -> None:
@@ -73,64 +73,64 @@ class Client:
 
     def gauge(
         self,
-        name: types.MName,
+        name: typedefs.MName,
         *,
-        value: types.MValue,
-        tags: Optional[types.MTags] = None,
-        sample_rate: types.MSampleRate = 1,
+        value: typedefs.MValue,
+        tags: Optional[typedefs.MTags] = None,
+        sample_rate: typedefs.MSampleRate = 1,
     ) -> None:
-        self._report(name, types.MType.GAUGE, value, tags, sample_rate)
+        self._report(name, typedefs.MType.GAUGE, value, tags, sample_rate)
 
     def increment(
         self,
-        name: types.MName,
+        name: typedefs.MName,
         *,
-        value: types.MValue = 1,
-        tags: Optional[types.MTags] = None,
-        sample_rate: types.MSampleRate = 1,
+        value: typedefs.MValue = 1,
+        tags: Optional[typedefs.MTags] = None,
+        sample_rate: typedefs.MSampleRate = 1,
     ) -> None:
-        self._report(name, types.MType.COUNTER, value, tags, sample_rate)
+        self._report(name, typedefs.MType.COUNTER, value, tags, sample_rate)
 
     def decrement(
         self,
-        name: types.MName,
+        name: typedefs.MName,
         *,
-        value: types.MValue = 1,
-        tags: Optional[types.MTags] = None,
-        sample_rate: types.MSampleRate = 1,
+        value: typedefs.MValue = 1,
+        tags: Optional[typedefs.MTags] = None,
+        sample_rate: typedefs.MSampleRate = 1,
     ) -> None:
         value = -value if value else value
-        self._report(name, types.MType.COUNTER, value, tags, sample_rate)
+        self._report(name, typedefs.MType.COUNTER, value, tags, sample_rate)
 
     def histogram(
         self,
-        name: types.MName,
+        name: typedefs.MName,
         *,
-        value: types.MValue,
-        tags: Optional[types.MTags] = None,
-        sample_rate: types.MSampleRate = 1,
+        value: typedefs.MValue,
+        tags: Optional[typedefs.MTags] = None,
+        sample_rate: typedefs.MSampleRate = 1,
     ) -> None:
-        self._report(name, types.MType.HISTOGRAM, value, tags, sample_rate)
+        self._report(name, typedefs.MType.HISTOGRAM, value, tags, sample_rate)
 
     def distribution(
         self,
-        name: types.MName,
+        name: typedefs.MName,
         *,
-        value: types.MValue,
-        tags: Optional[types.MTags] = None,
-        sample_rate: types.MSampleRate = 1,
+        value: typedefs.MValue,
+        tags: Optional[typedefs.MTags] = None,
+        sample_rate: typedefs.MSampleRate = 1,
     ) -> None:
-        self._report(name, types.MType.DISTRIBUTION, value, tags, sample_rate)
+        self._report(name, typedefs.MType.DISTRIBUTION, value, tags, sample_rate)
 
     def timing(
         self,
-        name: types.MName,
+        name: typedefs.MName,
         *,
-        value: types.MValue,
-        tags: Optional[types.MTags] = None,
-        sample_rate: types.MSampleRate = 1,
+        value: typedefs.MValue,
+        tags: Optional[typedefs.MTags] = None,
+        sample_rate: typedefs.MSampleRate = 1,
     ) -> None:
-        self._report(name, types.MType.TIMING, value, tags, sample_rate)
+        self._report(name, typedefs.MType.TIMING, value, tags, sample_rate)
 
     async def _listen(self) -> None:
         while not self._closing:
@@ -153,11 +153,11 @@ class Client:
 
     def _report(
         self,
-        name: types.MName,
-        type_: types.MType,
-        value: types.MValue,
-        tags: Optional[types.MTags] = None,
-        sample_rate: types.MSampleRate = 1,
+        name: typedefs.MName,
+        type_: typedefs.MType,
+        value: typedefs.MValue,
+        tags: Optional[typedefs.MTags] = None,
+        sample_rate: typedefs.MSampleRate = 1,
     ) -> None:
         # If client in closing state, then ignore any new incoming metric
         if self._closing:

@@ -1,18 +1,18 @@
 from typing import Optional
 
-from aiodogstatsd import types
+from aiodogstatsd import typedefs
 
 __all__ = ("build", "build_tags")
 
 
 def build(
     *,
-    name: types.MName,
-    namespace: Optional[types.MNamespace],
-    value: types.MValue,
-    type_: types.MType,
-    tags: types.MTags,
-    sample_rate: types.MSampleRate,
+    name: typedefs.MName,
+    namespace: Optional[typedefs.MNamespace],
+    value: typedefs.MValue,
+    type_: typedefs.MType,
+    tags: typedefs.MTags,
+    sample_rate: typedefs.MSampleRate,
 ) -> bytes:
     p_name = f"{namespace}.{name}" if namespace is not None else name
     p_sample_rate = f"|@{sample_rate}" if sample_rate != 1 else ""
@@ -23,7 +23,7 @@ def build(
     return f"{p_name}:{value}|{type_.value}{p_sample_rate}{p_tags}".encode("utf-8")
 
 
-def build_tags(tags: types.MTags) -> str:
+def build_tags(tags: typedefs.MTags) -> str:
     if not tags:
         return ""
 
