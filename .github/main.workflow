@@ -1,6 +1,6 @@
-workflow "linters && tests" {
+workflow "run linters and tests" {
   on = "push"
-  resolves = "notify"
+  resolves = ["notify build succeeded"]
 }
 
 action "py3.7 linting black" {
@@ -49,7 +49,7 @@ action "py3.7 testing" {
   }
 }
 
-action "notify" {
+action "notify build succeeded" {
   needs = "py3.7 testing"
   uses = "docker://gr1n/the-telegram-action:master"
   env = {
@@ -57,6 +57,19 @@ action "notify" {
   }
   secrets = [
     "TELEGRAM_BOT_TOKEN",
-    "TELEGRAM_CHAT_ID"
+    "TELEGRAM_CHAT_ID",
   ]
+}
+
+workflow "notify about new star" {
+  on = "watch"
+  resolves = ["notify project starred"]
+}
+
+action "notify project starred" {
+  uses = "docker://gr1n/the-telegram-action:master"
+  secrets = ["TELEGRAM_BOT_TOKEN", "TELEGRAM_CHAT_ID"]
+  env = {
+    TELEGRAM_MESSAGE = "`aiodogstatsd` starred!"
+  }
 }
