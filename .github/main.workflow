@@ -73,3 +73,26 @@ action "notify project starred" {
     TELEGRAM_MESSAGE = "`aiodogstatsd` starred!"
   }
 }
+
+workflow "publish" {
+  on = "release"
+  resolves = ["notify project published"]
+}
+
+action "py37 publish" {
+  uses = "docker://gr1n/the-python-action:master"
+  secrets = ["PYPI_PASSWORD", "PYPI_USERNAME"]
+  env = {
+    PYTHON_VERSION = "3.7.2"
+  }
+  args = "poetry publish --username=$PYPI_USERNAME --password=$PYPI_PASSWORD --build"
+}
+
+action "notify project published" {
+  uses = "docker://gr1n/the-telegram-action:master"
+  needs = ["py37 publish"]
+  secrets = ["TELEGRAM_BOT_TOKEN", "TELEGRAM_CHAT_ID"]
+  env = {
+    TELEGRAM_MESSAGE = "`aiodogstatsd` published to PyPI"
+  }
+}
