@@ -6,6 +6,14 @@ end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[*.{cfg,py,md,toml}]
+[*.py]
 indent_style = space
 indent_size = 4
+
+[*.{hcl,md,toml,yml}]
+indent_style = space
+indent_size = 2
+
+[Makefile]
+indent_style = tab
+indent_size = tab

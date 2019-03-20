@@ -44,13 +44,13 @@ $ poetry install
 To run tests and linters use command below:
 
 ```sh
-$ poetry run tox
+$ make lint && make test
 ```
 
 If you want to run only tests or linters you can explicitly specify which test environment you want to run, e.g.:
 
 ```sh
-$ poetry run tox -e py37-tests
+$ make lint-black
 ```
 
 ## License
