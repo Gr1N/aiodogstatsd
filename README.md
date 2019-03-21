@@ -38,7 +38,7 @@ To work on the `aiodogstatsd` codebase, you'll want to clone the project locally
 
 ```sh
 $ git clone git@github.com:Gr1N/aiodogstatsd.git
-$ poetry install
+$ make install
 ```
 
 To run tests and linters use command below:
