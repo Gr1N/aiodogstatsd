@@ -52,6 +52,7 @@ publish:
 
 .PHONY: ci-quality
 ci-quality: install lint test
+	@$(POETRY) run codecov --token=$(CODECOV_TOKEN)
 
 .PHONY: ci-publish
 ci-publish: install-poetry publish

@@ -6,6 +6,9 @@ workflow "run linters and tests" {
 action "py3.7 linting and testing" {
   uses = "docker://python:3.7.2"
   runs = ["sh", "-c", "make ci-quality"]
+  secrets = [
+    "CODECOV_TOKEN",
+  ]
 }
 
 action "notify build succeeded" {
@@ -27,7 +30,10 @@ workflow "notify about new star" {
 
 action "notify project starred" {
   uses = "docker://gr1n/the-telegram-action:master"
-  secrets = ["TELEGRAM_BOT_TOKEN", "TELEGRAM_CHAT_ID"]
+  secrets = [
+    "TELEGRAM_BOT_TOKEN",
+    "TELEGRAM_CHAT_ID",
+  ]
   env = {
     TELEGRAM_MESSAGE = "`aiodogstatsd` starred!"
   }
@@ -50,7 +56,10 @@ action "py37 publish" {
 action "notify project published" {
   uses = "docker://gr1n/the-telegram-action:master"
   needs = ["py37 publish"]
-  secrets = ["TELEGRAM_BOT_TOKEN", "TELEGRAM_CHAT_ID"]
+  secrets = [
+    "TELEGRAM_BOT_TOKEN",
+    "TELEGRAM_CHAT_ID",
+  ]
   env = {
     TELEGRAM_MESSAGE = "`aiodogstatsd` published to PyPI"
   }
