@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import asyncio
 from asyncio.transports import DatagramTransport
 from random import random
@@ -58,6 +60,13 @@ class Client:
 
         self._read_timeout = read_timeout
         self._close_timeout = close_timeout
+
+    async def __aenter__(self) -> Client:
+        await self.connect()
+        return self
+
+    async def __aexit__(self, *args) -> None:
+        await self.close()
 
     async def connect(self) -> None:
         loop = asyncio.get_running_loop()

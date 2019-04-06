@@ -14,6 +14,8 @@ $ pip install aiodogstatsd
 
 ## Usage
 
+You can simply initialize client to send any metric you want:
+
 ```python
 import asyncio
 
@@ -27,6 +29,22 @@ async def main():
     client.increment("users.online")
 
     await client.close()
+
+
+asyncio.run(main())
+```
+
+...or you can also use client as a context manager:
+
+```python
+import asyncio
+
+import aiodogstatsd
+
+
+async def main():
+    async with aiodogstatsd.Client() as client:
+      client.increment("users.online")
 
 
 asyncio.run(main())

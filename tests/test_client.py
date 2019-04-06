@@ -122,3 +122,15 @@ class TestClient:
         mocked_queue = mocker.patch.object(statsd_client, "_queue")
         statsd_client.increment("test_closing")
         mocked_queue.assert_not_called()
+
+    async def test_context_manager(self, unused_udp_port, statsd_server):
+        udp_server, collected = statsd_server
+
+        async with aiodogstatsd.Client(
+            host="localhost", port=unused_udp_port, constant_tags={"whoami": "batman"}
+        ) as statsd_client:
+            async with udp_server:
+                statsd_client.gauge("test_gauge", value=42, tags={"and": "robin"})
+                await wait_for(collected)
+
+        assert collected == [b"test_gauge:42|g|#whoami=batman,and=robin"]
