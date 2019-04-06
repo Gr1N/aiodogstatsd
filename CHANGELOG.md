@@ -1,5 +1,7 @@
 # Changelog for aiodogstatsd
 
+## 0.3.0 (2019-XX-XX)
+
 ## 0.2.0 (2019-04-06)
 
 - Added possibility to use `aiodogstatsd.Client` as a context manager.
