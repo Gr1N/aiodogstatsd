@@ -27,4 +27,4 @@ def build_tags(tags: typedefs.MTags) -> str:
     if not tags:
         return ""
 
-    return ",".join(f"{k}={v}" for k, v in tags.items())
+    return ",".join(f"{k}:{v}" for k, v in tags.items())

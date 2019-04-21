@@ -26,7 +26,7 @@ from aiodogstatsd import protocol, typedefs
                 "tags": {"tag_key_1": "tag_value_1", "tag_key_2": "tag_value_2"},
                 "sample_rate": 0.5,
             },
-            b"namespace_2.name_2:value_2|c|@0.5|#tag_key_1=tag_value_1,tag_key_2=tag_value_2",
+            b"namespace_2.name_2:value_2|c|@0.5|#tag_key_1:tag_value_1,tag_key_2:tag_value_2",
         ),
     ),
 )
