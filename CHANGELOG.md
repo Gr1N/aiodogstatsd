@@ -1,6 +1,8 @@
 # Changelog for aiodogstatsd
 
-## 0.3.0 (2019-XX-XX)
+## 0.4.0 (2019-XX-XX)
+
+## 0.3.0 (2019-04-21)
 
 - Fixed datagram format.
 
