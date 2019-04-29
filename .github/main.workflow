@@ -3,8 +3,19 @@ workflow "run linters and tests" {
   resolves = ["notify build succeeded"]
 }
 
+action "py3.6 linting and testing" {
+  uses = "docker://python:3.6"
+  runs = ["sh", "-c", "make ci-quality-basic"]
+  secrets = [
+    "CODECOV_TOKEN",
+  ]
+}
+
 action "py3.7 linting and testing" {
-  uses = "docker://python:3.7.2"
+  needs = [
+    "py3.6 linting and testing",
+  ]
+  uses = "docker://python:3.7"
   runs = ["sh", "-c", "make ci-quality"]
   secrets = [
     "CODECOV_TOKEN",
@@ -12,7 +23,9 @@ action "py3.7 linting and testing" {
 }
 
 action "notify build succeeded" {
-  needs = "py3.7 linting and testing"
+  needs = [
+    "py3.7 linting and testing",
+  ]
   uses = "docker://gr1n/the-telegram-action:master"
   env = {
     TELEGRAM_MESSAGE = "`aiodogstatsd` build succeeded"

@@ -2,6 +2,8 @@
 
 ## 0.4.0 (2019-XX-XX)
 
+- Added Python 3.6.* support.
+
 ## 0.3.0 (2019-04-21)
 
 - Fixed datagram format.

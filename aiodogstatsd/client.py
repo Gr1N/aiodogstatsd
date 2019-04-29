@@ -1,6 +1,5 @@
-from __future__ import annotations
-
 import asyncio
+import sys
 from asyncio.transports import DatagramTransport
 from random import random
 from typing import Optional
@@ -61,7 +60,7 @@ class Client:
         self._read_timeout = read_timeout
         self._close_timeout = close_timeout
 
-    async def __aenter__(self) -> Client:
+    async def __aenter__(self) -> "Client":
         await self.connect()
         return self
 
@@ -69,7 +68,7 @@ class Client:
         await self.close()
 
     async def connect(self) -> None:
-        loop = asyncio.get_running_loop()
+        loop = _get_event_loop()
         await loop.create_datagram_endpoint(
             lambda: self._protocol, remote_addr=(self._host, self._port)
         )
@@ -249,3 +248,13 @@ class DatagramProtocol(asyncio.DatagramProtocol):
         except Exception:
             # Errors should fail silently so they don't affect anything else
             pass
+
+
+def _get_event_loop_factory():  # pragma: no cover
+    if sys.version_info >= (3, 7):
+        return asyncio.get_running_loop  # type: ignore
+
+    return asyncio.get_event_loop
+
+
+_get_event_loop = _get_event_loop_factory()

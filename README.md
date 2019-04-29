@@ -31,7 +31,8 @@ async def main():
     await client.close()
 
 
-asyncio.run(main())
+loop = asyncio.get_event_loop()
+loop.run_until_complete(main())
 ```
 
 ...or you can also use client as a context manager:
@@ -47,7 +48,8 @@ async def main():
       client.increment("users.online")
 
 
-asyncio.run(main())
+loop = asyncio.get_event_loop()
+loop.run_until_complete(main())
 ```
 
 Look at `examples/` to find more examples of library usage.
