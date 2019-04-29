@@ -1,5 +1,7 @@
 # Changelog for aiodogstatsd
 
+## 0.5.0 (2019-XX-XX)
+
 ## 0.4.0 (2019-04-29)
 
 - Added Python 3.6.* support.
