@@ -1,7 +1,3 @@
-import asyncio
-from asyncio import DatagramProtocol
-from typing import List
-
 import pytest
 
 import aiodogstatsd
@@ -12,39 +8,15 @@ pytestmark = pytest.mark.asyncio
 @pytest.fixture
 async def statsd_client(unused_udp_port):
     client = aiodogstatsd.Client(
-        host="localhost", port=unused_udp_port, constant_tags={"whoami": "batman"}
+        host="0.0.0.0", port=unused_udp_port, constant_tags={"whoami": "batman"}
     )
     await client.connect()
     yield client
     await client.close()
 
 
-@pytest.fixture
-async def statsd_server(udp_server_factory, unused_udp_port):
-    collected = []
-
-    class ServerProtocol(DatagramProtocol):
-        def datagram_received(self, data, addr):
-            collected.append(data)
-
-    udp_server = udp_server_factory(
-        host="localhost", port=unused_udp_port, protocol=ServerProtocol
-    )
-
-    yield udp_server, collected
-
-
-async def wait_for(collected: List[str], *, count: int = 1, attempts: int = 5) -> None:
-    while attempts:
-        if len(collected) == count:
-            break
-
-        attempts -= 1
-        await asyncio.sleep(0.1)
-
-
 class TestClient:
-    async def test_gauge(self, statsd_client, statsd_server):
+    async def test_gauge(self, statsd_client, statsd_server, wait_for):
         udp_server, collected = statsd_server
 
         async with udp_server:
@@ -53,7 +25,7 @@ class TestClient:
 
         assert collected == [b"test_gauge:42|g|#whoami:batman,and:robin"]
 
-    async def test_increment(self, statsd_client, statsd_server):
+    async def test_increment(self, statsd_client, statsd_server, wait_for):
         udp_server, collected = statsd_server
 
         async with udp_server:
@@ -62,7 +34,7 @@ class TestClient:
 
         assert collected == [b"test_increment:1|c|#whoami:batman,and:robin"]
 
-    async def test_decrement(self, statsd_client, statsd_server):
+    async def test_decrement(self, statsd_client, statsd_server, wait_for):
         udp_server, collected = statsd_server
 
         async with udp_server:
@@ -71,7 +43,7 @@ class TestClient:
 
         assert collected == [b"test_decrement:-1|c|#whoami:batman,and:robin"]
 
-    async def test_histogram(self, statsd_client, statsd_server):
+    async def test_histogram(self, statsd_client, statsd_server, wait_for):
         udp_server, collected = statsd_server
 
         async with udp_server:
@@ -80,7 +52,7 @@ class TestClient:
 
         assert collected == [b"test_histogram:21|h|#whoami:batman,and:robin"]
 
-    async def test_distribution(self, statsd_client, statsd_server):
+    async def test_distribution(self, statsd_client, statsd_server, wait_for):
         udp_server, collected = statsd_server
 
         async with udp_server:
@@ -91,7 +63,7 @@ class TestClient:
 
         assert collected == [b"test_distribution:84|d|#whoami:batman,and:robin"]
 
-    async def test_timing(self, statsd_client, statsd_server):
+    async def test_timing(self, statsd_client, statsd_server, wait_for):
         udp_server, collected = statsd_server
 
         async with udp_server:
@@ -123,11 +95,11 @@ class TestClient:
         statsd_client.increment("test_closing")
         mocked_queue.assert_not_called()
 
-    async def test_context_manager(self, unused_udp_port, statsd_server):
+    async def test_context_manager(self, unused_udp_port, statsd_server, wait_for):
         udp_server, collected = statsd_server
 
         async with aiodogstatsd.Client(
-            host="localhost", port=unused_udp_port, constant_tags={"whoami": "batman"}
+            host="0.0.0.0", port=unused_udp_port, constant_tags={"whoami": "batman"}
         ) as statsd_client:
             async with udp_server:
                 statsd_client.gauge("test_gauge", value=42, tags={"and": "robin"})
