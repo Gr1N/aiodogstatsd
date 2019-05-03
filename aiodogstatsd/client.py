@@ -1,10 +1,10 @@
 import asyncio
-import sys
 from asyncio.transports import DatagramTransport
 from random import random
 from typing import Optional
 
 from aiodogstatsd import protocol, typedefs
+from aiodogstatsd.compat import get_event_loop
 
 __all__ = ("Client",)
 
@@ -68,7 +68,7 @@ class Client:
         await self.close()
 
     async def connect(self) -> None:
-        loop = _get_event_loop()
+        loop = get_event_loop()
         await loop.create_datagram_endpoint(
             lambda: self._protocol, remote_addr=(self._host, self._port)
         )
@@ -248,13 +248,3 @@ class DatagramProtocol(asyncio.DatagramProtocol):
         except Exception:
             # Errors should fail silently so they don't affect anything else
             pass
-
-
-def _get_event_loop_factory():  # pragma: no cover
-    if sys.version_info >= (3, 7):
-        return asyncio.get_running_loop  # type: ignore
-
-    return asyncio.get_event_loop
-
-
-_get_event_loop = _get_event_loop_factory()

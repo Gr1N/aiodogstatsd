@@ -6,7 +6,7 @@ install-poetry:
 
 .PHONY: install-deps
 install-deps:
-	@$(POETRY) install -vv
+	@$(POETRY) install -vv --extras aiohttp
 
 .PHONY: install
 install: install-poetry install-deps
