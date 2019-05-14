@@ -8,8 +8,16 @@ Library fully tested with [statsd_exporter](https://github.com/prometheus/statsd
 
 ## Installation
 
+Just type:
+
 ```sh
 $ pip install aiodogstatsd
+```
+
+...or if you're interested in integration with [`AIOHTTP`](https://aiohttp.readthedocs.io/) framework specify corresponding extras:
+
+```sh
+$ pip install aiodogstatsd[aiohttp]
 ```
 
 ## Usage
@@ -52,7 +60,7 @@ loop = asyncio.get_event_loop()
 loop.run_until_complete(main())
 ```
 
-Look at `examples/` to find more examples of library usage.
+Look at `examples/` to find more examples of library usage, e.g. integration with [`AIOHTTP`](https://aiohttp.readthedocs.io/) framework.
 
 ## Contributing
 
