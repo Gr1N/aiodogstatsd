@@ -2,6 +2,8 @@
 
 ## 0.5.0 (2019-XX-XX)
 
+- Added AIOHTTP integration helpers (cleanup context and middleware).
+
 ## 0.4.0 (2019-04-29)
 
 - Added Python 3.6.* support.

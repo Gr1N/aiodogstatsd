@@ -45,7 +45,7 @@ readme = "README.md"
 homepage = "https://github.com/Gr1N/aiodogstatsd"
 repository = "https://github.com/Gr1N/aiodogstatsd"
 
-keywords = ["asyncio", "statsd", "statsd-client", "statsd-metrics", "dogstatsd"]
+keywords = ["asyncio", "statsd", "statsd-client", "statsd-metrics", "dogstatsd", "aiohttp"]
 
 classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules"
