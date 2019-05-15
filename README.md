@@ -14,10 +14,10 @@ Just type:
 $ pip install aiodogstatsd
 ```
 
-...or if you're interested in integration with [`AIOHTTP`](https://aiohttp.readthedocs.io/) framework specify corresponding extras:
+...or if you're interested in integration with [`AIOHTTP`](https://aiohttp.readthedocs.io/) or [`Sanic`](https://sanicframework.org/) frameworks specify corresponding extras:
 
 ```sh
-$ pip install aiodogstatsd[aiohttp]
+$ pip install aiodogstatsd[aiohttp,sanic]
 ```
 
 ## Usage
@@ -60,7 +60,7 @@ loop = asyncio.get_event_loop()
 loop.run_until_complete(main())
 ```
 
-Look at `examples/` to find more examples of library usage, e.g. integration with [`AIOHTTP`](https://aiohttp.readthedocs.io/) framework.
+Look at `examples/` to find more examples of library usage, e.g. integration with [`AIOHTTP`](https://aiohttp.readthedocs.io/)  or [`Sanic`](https://sanicframework.org/) frameworks.
 
 ## Contributing
 

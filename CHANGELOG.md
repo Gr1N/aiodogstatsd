@@ -2,7 +2,8 @@
 
 ## 0.5.0 (2019-XX-XX)
 
-- Added AIOHTTP integration helpers (cleanup context and middleware).
+- Added [`AIOHTTP`](https://aiohttp.readthedocs.io/) framework integration helpers (cleanup context and middleware).
+- Added [`Sanic`](https://sanicframework.org/) framework integration helpers (listeners and middlewares).
 
 ## 0.4.0 (2019-04-29)
 
