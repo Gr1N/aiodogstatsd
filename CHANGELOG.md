@@ -1,6 +1,6 @@
 # Changelog for aiodogstatsd
 
-## 0.5.0 (2019-XX-XX)
+## 0.5.0 (2019-05-16)
 
 - Added [`AIOHTTP`](https://aiohttp.readthedocs.io/) framework integration helpers (cleanup context and middleware).
 - Added [`Sanic`](https://sanicframework.org/) framework integration helpers (listeners and middlewares).
