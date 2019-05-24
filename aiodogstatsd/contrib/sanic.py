@@ -19,7 +19,7 @@ __all__ = (
 
 
 DEFAULT_CLIENT_APP_KEY = "statsd"
-DEAFULT_REQUEST_DURATION_METRIC_NAME = "http_request_duration_seconds"
+DEAFULT_REQUEST_DURATION_METRIC_NAME = "http_request_duration"
 
 
 ListenerCallable = Callable[[Sanic, AbstractEventLoop], Awaitable]
@@ -72,7 +72,7 @@ def middlewares_factory(
         ):
             request_duration = (
                 get_event_loop().time() - request["_statsd_request_started_at"]
-            )
+            ) * 1000
             getattr(request.app, client_app_key).timing(
                 request_duration_metric_name,
                 value=request_duration,
