@@ -57,7 +57,7 @@ def aiohttp_server_url(unused_tcp_port):
 @pytest.fixture(autouse=True)
 def mock_loop_time(mocker):
     mock_loop = mocker.Mock()
-    mock_loop.time.return_value = 0
+    mock_loop.time.side_effect = [0, 1]
 
     mocker.patch("aiodogstatsd.contrib.aiohttp.get_event_loop", return_value=mock_loop)
 
@@ -74,7 +74,7 @@ class TestAIOHTTP:
             await wait_for(collected)
 
         assert collected == [
-            b"http_request_duration_seconds:0|ms"
+            b"http_request_duration:1000|ms"
             b"|#whoami:batman,method:GET,path:/hello,status:200"
         ]
 
@@ -89,7 +89,7 @@ class TestAIOHTTP:
             await wait_for(collected)
 
         assert collected == [
-            b"http_request_duration_seconds:0|ms"
+            b"http_request_duration:1000|ms"
             b"|#whoami:batman,method:POST,path:/bad_request,status:400"
         ]
 
@@ -108,7 +108,7 @@ class TestAIOHTTP:
             await wait_for(collected)
 
         assert collected == [
-            b"http_request_duration_seconds:0|ms"
+            b"http_request_duration:1000|ms"
             b"|#whoami:batman,method:GET,path:/internal_server_error,status:500"
         ]
 
@@ -123,7 +123,7 @@ class TestAIOHTTP:
             await wait_for(collected)
 
         assert collected == [
-            b"http_request_duration_seconds:0|ms"
+            b"http_request_duration:1000|ms"
             b"|#whoami:batman,method:GET,path:/unauthorized,status:401"
         ]
 

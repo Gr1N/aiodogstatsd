@@ -18,7 +18,7 @@ __all__ = (
 
 
 DEFAULT_CLIENT_APP_KEY = "statsd"
-DEAFULT_REQUEST_DURATION_METRIC_NAME = "http_request_duration_seconds"
+DEAFULT_REQUEST_DURATION_METRIC_NAME = "http_request_duration"
 
 
 def cleanup_context_factory(
@@ -74,7 +74,7 @@ def middleware_factory(
             if _proceed_collecting(  # pragma: no branch
                 request, response_status, collect_not_allowed, collect_not_found
             ):
-                request_duration = loop.time() - request_started_at
+                request_duration = (loop.time() - request_started_at) * 1000
                 request.app[client_app_key].timing(
                     request_duration_metric_name,
                     value=request_duration,
