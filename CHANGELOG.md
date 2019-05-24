@@ -1,6 +1,8 @@
 # Changelog for aiodogstatsd
 
-## 0.6.0 (2019-XX-XX)
+## 0.6.0 (2019-05-24)
+
+- **Breaking Change:** Send time in milliseconds in middlewares, #3 by @eserge
 
 ## 0.5.0 (2019-05-16)
 
