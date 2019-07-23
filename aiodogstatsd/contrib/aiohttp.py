@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import AsyncIterator, Callable, Optional
+from typing import AsyncIterator, Callable, Optional, cast
 
 from aiohttp import web
 from aiohttp.web_app import _Middleware
@@ -68,7 +68,7 @@ def middleware_factory(
             response_status = e.status
             raise e
         except Exception as e:
-            response_status = HTTPStatus.INTERNAL_SERVER_ERROR.value
+            response_status = cast(int, HTTPStatus.INTERNAL_SERVER_ERROR.value)
             raise e
         finally:
             if _proceed_collecting(  # pragma: no branch
