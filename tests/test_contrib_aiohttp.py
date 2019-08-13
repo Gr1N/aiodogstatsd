@@ -1,3 +1,5 @@
+import asyncio
+import sys
 from http import HTTPStatus
 
 import aiohttp
@@ -8,6 +10,21 @@ from yarl import URL
 from aiodogstatsd.contrib import aiohttp as aiodogstatsd
 
 pytestmark = pytest.mark.asyncio
+
+
+def all_tasks():
+    if sys.version_info >= (3, 7):
+        return asyncio.all_tasks()
+    else:
+        tasks = list(asyncio.Task.all_tasks())
+        return {t for t in tasks if not t.done()}
+
+
+def current_task():
+    if sys.version_info >= (3, 7):
+        return asyncio.current_task()
+    else:
+        return asyncio.Task.current_task()
 
 
 @pytest.fixture(autouse=True)
@@ -150,3 +167,19 @@ class TestAIOHTTP:
             await wait_for(collected)
 
         assert collected == []
+
+    @pytest.mark.timeout(10)
+    async def test_client_closed_correctly(self):
+        # Simulate actual behaviour of the web.run_app clean up phase:
+        # cancel all active tasks at the end
+        # https://git.io/fj56P
+
+        tasks = all_tasks()
+
+        # cancel all tasks except current
+        test_task = current_task()
+        for task in tasks:
+            if task is not test_task:
+                task.cancel()
+
+        # should not hang on the end

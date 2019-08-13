@@ -169,13 +169,15 @@ class Client:
         self._report(name, typedefs.MType.TIMING, value, tags, sample_rate)
 
     async def _listen(self) -> None:
-        while not self._closing:
-            await self._listen_and_send()
-
-        # Try to send remaining enqueued metrics if any
-        while not self._queue.empty():
-            await self._listen_and_send()
-        self._listen_future_join.set_result(True)
+        try:
+            while not self._closing:
+                await self._listen_and_send()
+        finally:
+            # Note that `asyncio.CancelledError` raised on app clean up
+            # Try to send remaining enqueued metrics if any
+            while not self._queue.empty():
+                await self._listen_and_send()
+            self._listen_future_join.set_result(True)
 
     async def _listen_and_send(self) -> None:
         coro = self._queue.get()
