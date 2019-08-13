@@ -1,3 +1,5 @@
+import asyncio
+
 import pytest
 
 import aiodogstatsd
@@ -85,6 +87,22 @@ class TestClient:
         mocked_queue.put_nowait.assert_called_once_with(
             b"test_sample_rate_1:1|c|#whoami:batman"
         )
+
+    async def test_message_send_on_close(self, mocker):
+        statsd_client = aiodogstatsd.Client()
+        mocked_queue = mocker.patch.object(statsd_client, "_queue")
+        mocked_queue.empty = mocker.Mock()
+        mocked_queue.empty.side_effect = [0, 1]
+        mocked_queue.get = mocker.Mock()
+        mocked_queue.get.side_effect = asyncio.Future
+
+        await statsd_client.connect()
+        await asyncio.sleep(0)
+        mocked_queue.get.assert_called_once()
+        await statsd_client.close()
+
+        assert mocked_queue.get.call_count == 2
+        assert mocked_queue.empty.call_count == 2
 
     async def test_skip_if_closing(self, mocker):
         statsd_client = aiodogstatsd.Client()
