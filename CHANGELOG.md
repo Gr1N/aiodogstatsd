@@ -1,5 +1,7 @@
 # Changelog for aiodogstatsd
 
+## 0.8.0 (2019-XX-XX)
+
 ## 0.7.0 (2019-08-14)
 
 - Fixed `AIOHTTP` graceful shutdown, #5 by @Reskov
