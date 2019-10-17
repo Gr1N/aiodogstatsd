@@ -37,9 +37,20 @@ steps:
   - name: cached-deps
     path: /root/.cache/pypoetry/virtualenvs
 
-- name: lint-3.7
+- name: deps-3.8
   pull: always
-  image: python:3.7
+  image: python:3.8
+  commands:
+  - make install
+  volumes:
+  - name: cached-poetry
+    path: /root/.poetry
+  - name: cached-deps
+    path: /root/.cache/pypoetry/virtualenvs
+
+- name: lint-3.8
+  pull: always
+  image: python:3.8
   commands:
   - make lint
   volumes:
@@ -62,6 +73,17 @@ steps:
 - name: test-3.7
   pull: always
   image: python:3.7
+  commands:
+  - make test
+  volumes:
+  - name: cached-poetry
+    path: /root/.poetry
+  - name: cached-deps
+    path: /root/.cache/pypoetry/virtualenvs
+
+- name: test-3.8
+  pull: always
+  image: python:3.8
   commands:
   - make test
   - make codecov
@@ -95,7 +117,7 @@ steps:
 
 - name: publish
   pull: always
-  image: python:3.7
+  image: python:3.8
   commands:
   - make publish
   environment:

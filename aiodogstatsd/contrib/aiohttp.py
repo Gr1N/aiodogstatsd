@@ -77,7 +77,7 @@ def middleware_factory(
                 request, response_status, collect_not_allowed, collect_not_found
             ):
                 request_duration = (loop.time() - request_started_at) * 1000
-                request.app[client_app_key].timing(
+                request.app[client_app_key].timing(  # pragma: no branch
                     request_duration_metric_name,
                     value=request_duration,
                     tags={
