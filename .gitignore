@@ -138,3 +138,6 @@ venv.bak/
 
 ### asdf ###
 .tool-versions
+
+### poetry ###
+get-poetry.py

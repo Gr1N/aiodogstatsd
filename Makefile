@@ -1,8 +1,13 @@
 POETRY ?= $(HOME)/.poetry/bin/poetry
 
+# Temporary we're going to use a preview version of Poetry due to lack of support of
+# Python 3.8 in stable releases.
 .PHONY: install-poetry
 install-poetry:
-	@curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
+	@-rm get-poetry.py
+	@curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py > get-poetry.py
+	@python get-poetry.py --preview
+	@-rm get-poetry.py
 
 .PHONY: install-deps
 install-deps:
@@ -44,7 +49,7 @@ lint: lint-black lint-flake8 lint-isort lint-mypy
 
 .PHONY: test
 test:
-	@$(POETRY) run pytest --cov-report term --cov-report html --cov=aiodogstatsd -vv
+	@$(POETRY) run pytest --cov-report term --cov-report html --cov=aiodogstatsd -vv $(opts)
 
 .PHONY: codecov
 codecov:

@@ -7,7 +7,7 @@ local
     image: 'docker:git',
     commands: ['git fetch --tags'],
   },
-  py_step(name, commands, version='3.7') = {
+  py_step(name, commands, version='3.8') = {
     name: name,
     pull: 'always',
     image: 'python:%s' % version,
@@ -47,10 +47,12 @@ local
   steps: [
     git_step,
     py_step('deps-3.6', ['make install'], version='3.6'),
-    py_step('deps-3.7', ['make install']),
-    py_step('lint-3.7', ['make lint']),
+    py_step('deps-3.7', ['make install'], version='3.7'),
+    py_step('deps-3.8', ['make install']),
+    py_step('lint-3.8', ['make lint']),
     py_step('test-3.6', ['make test'], version='3.6'),
-    py_step('test-3.7', ['make test', 'make codecov']) {
+    py_step('test-3.7', ['make test'], version='3.7'),
+    py_step('test-3.8', ['make test', 'make codecov']) {
       environment: {
         CODECOV_TOKEN: {
           from_secret: 'CODECOV_TOKEN',
