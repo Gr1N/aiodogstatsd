@@ -170,7 +170,7 @@ class TestAIOHTTP:
 
     @pytest.mark.timeout(10)
     async def test_client_closed_correctly(self):
-        # Simulate actual behaviour of the web.run_app clean up phase:
+        # Simulate actual behavior of the web.run_app clean up phase:
         # cancel all active tasks at the end
         # https://git.io/fj56P
 
