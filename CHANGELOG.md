@@ -1,6 +1,6 @@
 # Changelog for aiodogstatsd
 
-## 0.8.0 (2019-XX-XX)
+## 0.8.0 (2019-11-03)
 
 - Fixed `AIOHTTP` middleware to catch any possible exception, #6
 - Fixed `AIOHTTP` middleware to properly handle variable routes, #8
