@@ -2,6 +2,8 @@
 
 ## 0.8.0 (2019-XX-XX)
 
+- Fixed `AIOHTTP` middleware to catch any possible exception, #6
+
 ## 0.7.0 (2019-08-14)
 
 - Fixed `AIOHTTP` graceful shutdown, #5 by @Reskov

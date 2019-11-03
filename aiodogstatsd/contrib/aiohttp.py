@@ -61,14 +61,16 @@ def middleware_factory(
         loop = get_event_loop()
         request_started_at = loop.time()
 
+        # By default response status is 500 because we don't want to write any logic
+        # for catching exceptions except exceptions which inherited from `web.HTTPException`.
+        # And also we will override response status in case of any successful handler execution.
+        response_status = cast(int, HTTPStatus.INTERNAL_SERVER_ERROR.value)
+
         try:
             response = await handler(request)
             response_status = response.status
         except web.HTTPException as e:
             response_status = e.status
-            raise e
-        except Exception as e:
-            response_status = cast(int, HTTPStatus.INTERNAL_SERVER_ERROR.value)
             raise e
         finally:
             if _proceed_collecting(  # pragma: no branch
