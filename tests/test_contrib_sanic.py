@@ -37,9 +37,10 @@ async def sanic_server(event_loop, unused_tcp_port, unused_udp_port):
     app.register_listener(listener_setup_statsd, "before_server_start")
     app.register_listener(listener_close_statsd, "after_server_stop")
 
-    middleware_request_statsd, middleware_response_statsd = (
-        aiodogstatsd.middlewares_factory()
-    )
+    (
+        middleware_request_statsd,
+        middleware_response_statsd,
+    ) = aiodogstatsd.middlewares_factory()
     app.register_middleware(middleware_request_statsd, attach_to="request")
     app.register_middleware(middleware_response_statsd, attach_to="response")
 
