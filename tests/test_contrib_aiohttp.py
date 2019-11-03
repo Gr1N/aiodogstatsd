@@ -32,6 +32,9 @@ async def aiohttp_server(unused_tcp_port, unused_udp_port):
     async def handler_hello(request):
         return web.json_response({"hello": "aiodogstatsd"})
 
+    async def handler_hello_variable(request):
+        return web.json_response({"hello": request.match_info["name"]})
+
     async def handler_bad_request(request):
         return web.json_response({"hello": "bad"}, status=HTTPStatus.BAD_REQUEST)
 
@@ -51,6 +54,7 @@ async def aiohttp_server(unused_tcp_port, unused_udp_port):
     app.add_routes(
         [
             web.get("/hello", handler_hello),
+            web.get("/hello/{name}", handler_hello_variable),
             web.post("/bad_request", handler_bad_request),
             web.get("/internal_server_error", handler_internal_server_error),
             web.get("/unauthorized", handler_unauthorized),
@@ -93,6 +97,21 @@ class TestAIOHTTP:
         assert collected == [
             b"http_request_duration:1000|ms"
             b"|#whoami:batman,method:GET,path:/hello,status:200"
+        ]
+
+    async def test_ok_variable_route(self, aiohttp_server_url, statsd_server, wait_for):
+        udp_server, collected = statsd_server
+
+        async with udp_server:
+            async with aiohttp.ClientSession() as session:
+                async with session.get(aiohttp_server_url / "hello" / "batman") as resp:
+                    assert resp.status == HTTPStatus.OK
+
+            await wait_for(collected)
+
+        assert collected == [
+            b"http_request_duration:1000|ms"
+            b"|#whoami:batman,method:GET,path:/hello/{name},status:200"
         ]
 
     async def test_bad_request(self, aiohttp_server_url, statsd_server, wait_for):

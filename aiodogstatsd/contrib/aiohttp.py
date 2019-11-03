@@ -4,7 +4,7 @@ from typing import AsyncIterator, Callable, Optional, cast
 from aiohttp import web
 from aiohttp.web_app import _Middleware
 from aiohttp.web_routedef import _SimpleHandler
-from aiohttp.web_urldispatcher import MatchInfoError
+from aiohttp.web_urldispatcher import DynamicResource, MatchInfoError
 
 from aiodogstatsd import Client, typedefs
 from aiodogstatsd.compat import get_event_loop
@@ -82,7 +82,7 @@ def middleware_factory(
                     value=request_duration,
                     tags={
                         "method": request.method,
-                        "path": request.path,
+                        "path": _derive_request_path(request),
                         "status": response_status,
                     },
                 )
@@ -105,3 +105,16 @@ def _proceed_collecting(
         return False
 
     return True
+
+
+def _derive_request_path(request: web.Request) -> str:
+    """
+    AIOHTTP has a lot of different route resources like DynamicResource and we need
+    to process them correctly to get a valid original request path, so if you found
+    an issue with the request path in your metrics then you need to go here and
+    extend deriving logic.
+    """
+    if isinstance(request.match_info.route.resource, DynamicResource):
+        return request.match_info.route.resource.canonical
+
+    return request.path
