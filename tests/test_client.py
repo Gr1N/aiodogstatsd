@@ -10,7 +10,20 @@ pytestmark = pytest.mark.asyncio
 @pytest.fixture
 async def statsd_client(unused_udp_port):
     client = aiodogstatsd.Client(
-        host="0.0.0.0", port=unused_udp_port, constant_tags={"whoami": "batman"}
+        host="0.0.0.0", port=unused_udp_port, constant_tags={"whoami": "batman"},
+    )
+    await client.connect()
+    yield client
+    await client.close()
+
+
+@pytest.fixture
+async def statsd_client_samplerate(unused_udp_port):
+    client = aiodogstatsd.Client(
+        host="0.0.0.0",
+        port=unused_udp_port,
+        constant_tags={"whoami": "batman"},
+        sample_rate=0.3,
     )
     await client.connect()
     yield client
@@ -74,19 +87,24 @@ class TestClient:
 
         assert collected == [b"test_timing:42|ms|#whoami:batman,and:robin"]
 
-    async def test_skip_if_sample_rate(self, mocker, statsd_client):
-        mocked_queue = mocker.patch.object(statsd_client, "_queue")
+    async def test_skip_if_sample_rate(self, mocker, statsd_client_samplerate):
+        mocked_queue = mocker.patch.object(statsd_client_samplerate, "_queue")
 
-        statsd_client.increment("test_sample_rate_1")
+        statsd_client_samplerate.increment("test_sample_rate_1", sample_rate=1)
         mocked_queue.put_nowait.assert_called_once_with(
             b"test_sample_rate_1:1|c|#whoami:batman"
         )
 
         mocker.patch("aiodogstatsd.client.random", return_value=1)
-        statsd_client.increment("test_sample_rate_2", sample_rate=0.5)
+        statsd_client_samplerate.increment("test_sample_rate_2", sample_rate=0.5)
         mocked_queue.put_nowait.assert_called_once_with(
             b"test_sample_rate_1:1|c|#whoami:batman"
         )
+
+        mocked_queue.put_nowait.reset_mock()
+        mocker.patch("aiodogstatsd.client.random", return_value=0.4)
+        statsd_client_samplerate.increment("test_sample_rate_4")
+        mocked_queue.put_nowait.assert_not_called()
 
     async def test_message_send_on_close(self, mocker):
         statsd_client = aiodogstatsd.Client()
