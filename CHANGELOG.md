@@ -1,7 +1,7 @@
 # Changelog for aiodogstatsd
 
 ## 0.9.0 (2019-XX-XX)
-
+- Added sample rate as class attribute, for setting sample rate class-wide.
 ## 0.8.0 (2019-11-03)
 
 - Fixed `AIOHTTP` middleware to catch any possible exception, #6

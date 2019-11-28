@@ -22,6 +22,7 @@ class Client:
         "_listen_future_join",
         "_read_timeout",
         "_close_timeout",
+        "_sample_rate",
     )
 
     def __init__(
@@ -33,6 +34,7 @@ class Client:
         constant_tags: Optional[typedefs.MTags] = None,
         read_timeout: float = 0.5,
         close_timeout: Optional[float] = None,
+        sample_rate: typedefs.MSampleRate = 1,
     ) -> None:
         """
         Initialize a client object.
@@ -43,6 +45,7 @@ class Client:
         Also, you can specify default read timeout which will be used to read messages
         from an AsyncIO queue, and you can specify close timeout which will be used
         as wait time for client closing.
+        sample_rate can be used for adjusting the frequency of stats sending.
         """
         self._host = host
         self._port = port
@@ -59,6 +62,7 @@ class Client:
 
         self._read_timeout = read_timeout
         self._close_timeout = close_timeout
+        self._sample_rate = sample_rate
 
     async def __aenter__(self) -> "Client":
         await self.connect()
@@ -95,7 +99,7 @@ class Client:
         *,
         value: typedefs.MValue,
         tags: Optional[typedefs.MTags] = None,
-        sample_rate: typedefs.MSampleRate = 1,
+        sample_rate: Optional[typedefs.MSampleRate] = None,
     ) -> None:
         """
         Record the value of a gauge, optionally setting tags and a sample rate.
@@ -108,7 +112,7 @@ class Client:
         *,
         value: typedefs.MValue = 1,
         tags: Optional[typedefs.MTags] = None,
-        sample_rate: typedefs.MSampleRate = 1,
+        sample_rate: Optional[typedefs.MSampleRate] = None,
     ) -> None:
         """
         Increment a counter, optionally setting a value, tags and a sample rate.
@@ -121,7 +125,7 @@ class Client:
         *,
         value: typedefs.MValue = 1,
         tags: Optional[typedefs.MTags] = None,
-        sample_rate: typedefs.MSampleRate = 1,
+        sample_rate: Optional[typedefs.MSampleRate] = None,
     ) -> None:
         """
         Decrement a counter, optionally setting a value, tags and a sample rate.
@@ -135,7 +139,7 @@ class Client:
         *,
         value: typedefs.MValue,
         tags: Optional[typedefs.MTags] = None,
-        sample_rate: typedefs.MSampleRate = 1,
+        sample_rate: Optional[typedefs.MSampleRate] = None,
     ) -> None:
         """
         Sample a histogram value, optionally setting tags and a sample rate.
@@ -148,7 +152,7 @@ class Client:
         *,
         value: typedefs.MValue,
         tags: Optional[typedefs.MTags] = None,
-        sample_rate: typedefs.MSampleRate = 1,
+        sample_rate: Optional[typedefs.MSampleRate] = None,
     ) -> None:
         """
         Send a global distribution value, optionally setting tags and a sample rate.
@@ -161,7 +165,7 @@ class Client:
         *,
         value: typedefs.MValue,
         tags: Optional[typedefs.MTags] = None,
-        sample_rate: typedefs.MSampleRate = 1,
+        sample_rate: Optional[typedefs.MSampleRate] = None,
     ) -> None:
         """
         Record a timing, optionally setting tags and a sample rate.
@@ -195,12 +199,13 @@ class Client:
         type_: typedefs.MType,
         value: typedefs.MValue,
         tags: Optional[typedefs.MTags] = None,
-        sample_rate: typedefs.MSampleRate = 1,
+        sample_rate: Optional[typedefs.MSampleRate] = None,
     ) -> None:
         # If client in closing state, then ignore any new incoming metric
         if self._closing:
             return
 
+        sample_rate = sample_rate or self._sample_rate
         if sample_rate != 1 and random() > sample_rate:
             return
 
