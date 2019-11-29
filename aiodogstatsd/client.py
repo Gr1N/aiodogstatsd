@@ -40,13 +40,12 @@ class Client:
         """
         Initialize a client object.
 
-        You can pass host and port of the DogStatsD server, namespace to prefix all
-        metric names, constant tags to attach to all metrics.
+        You can pass `host` and `port` of the DogStatsD server, `namespace` to prefix
+        all metric names, `constant_tags` to attach to all metrics.
 
-        Also, you can specify default read timeout which will be used to read messages
-        from an AsyncIO queue, and you can specify close timeout which will be used
-        as wait time for client closing.
-        sample_rate can be used for adjusting the frequency of stats sending.
+        Also, you can specify: `read_timeout` which will be used to read messages from
+        an AsyncIO queue; `close_timeout` which will be used as wait time for client
+        closing; `sample_rate` can be used for adjusting the frequency of stats sending.
         """
         self._host = host
         self._port = port
@@ -234,7 +233,7 @@ class Client:
         sample_rate: Optional[typedefs.MSampleRate] = None,
     ) -> Iterator[None]:
         """
-        Context for easily timing methods
+        Context manager for easily timing methods.
         """
         loop = get_event_loop()
         started_at = loop.time()

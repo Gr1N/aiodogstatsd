@@ -61,9 +61,10 @@ def middleware_factory(
         loop = get_event_loop()
         request_started_at = loop.time()
 
-        # By default response status is 500 because we don't want to write any logic
-        # for catching exceptions except exceptions which inherited from `web.HTTPException`.
-        # And also we will override response status in case of any successful handler execution.
+        # By default response status is 500 because we don't want to write any logic for
+        # catching exceptions except exceptions which inherited from
+        # `web.HTTPException`. And also we will override response status in case of any
+        # successful handler execution.
         response_status = cast(int, HTTPStatus.INTERNAL_SERVER_ERROR.value)
 
         try:
@@ -109,10 +110,10 @@ def _proceed_collecting(
 
 def _derive_request_path(request: web.Request) -> str:
     """
-    AIOHTTP has a lot of different route resources like DynamicResource and we need
-    to process them correctly to get a valid original request path, so if you found
-    an issue with the request path in your metrics then you need to go here and
-    extend deriving logic.
+    AIOHTTP has a lot of different route resources like DynamicResource and we need to
+    process them correctly to get a valid original request path, so if you found an
+    issue with the request path in your metrics then you need to go here and extend
+    deriving logic.
     """
     if isinstance(request.match_info.route.resource, DynamicResource):
         return request.match_info.route.resource.canonical
