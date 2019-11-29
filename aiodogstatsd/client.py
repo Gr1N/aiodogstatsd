@@ -1,7 +1,8 @@
 import asyncio
 from asyncio.transports import DatagramTransport
+from contextlib import contextmanager
 from random import random
-from typing import Optional
+from typing import Iterator, Optional
 
 from aiodogstatsd import protocol, typedefs
 from aiodogstatsd.compat import get_event_loop
@@ -223,6 +224,23 @@ class Client:
                 sample_rate=sample_rate,
             )
         )
+
+    @contextmanager
+    def timeit(
+        self,
+        name: typedefs.MName,
+        *,
+        tags: Optional[typedefs.MTags] = None,
+        sample_rate: Optional[typedefs.MSampleRate] = None,
+    ) -> Iterator[None]:
+        """
+        Context for easily timing methods
+        """
+        loop = get_event_loop()
+        started_at = loop.time()
+        yield
+        value = (loop.time() - started_at) * 1000
+        self.timing(name, value=int(value), tags=tags, sample_rate=sample_rate)
 
 
 class DatagramProtocol(asyncio.DatagramProtocol):

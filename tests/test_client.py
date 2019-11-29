@@ -142,3 +142,14 @@ class TestClient:
                 await wait_for(collected)
 
         assert collected == [b"test_gauge:42|g|#whoami:batman,and:robin"]
+
+    async def test_timeit(self, statsd_client, statsd_server, wait_for, mocker):
+        udp_server, collected = statsd_server
+
+        loop = mocker.patch("aiodogstatsd.client.get_event_loop")
+        loop.return_value.time.return_value = 1.0
+        with statsd_client.timeit("test_timer", tags={"and": "robin"}):
+            loop.return_value.time.return_value = 2.0
+        async with udp_server:
+            await wait_for(collected)
+        assert collected == [b"test_timer:1000|ms|#whoami:batman,and:robin"]
