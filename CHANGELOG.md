@@ -1,6 +1,6 @@
 # Changelog for aiodogstatsd
 
-## 0.9.0 (2019-XX-XX)
+## 0.9.0 (2019-11-29)
 
 - Added sample rate as class attribute, for setting sample rate class-wide, #11 by @aviramha
 - Added timer context manager for easily timing events, #12 by @aviramha
