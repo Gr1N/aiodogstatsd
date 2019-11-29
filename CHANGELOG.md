@@ -1,5 +1,7 @@
 # Changelog for aiodogstatsd
 
+## 0.10.0 (20XX-XX-XX)
+
 ## 0.9.0 (2019-11-29)
 
 - Added sample rate as class attribute, for setting sample rate class-wide, #11 by @aviramha
