@@ -1,5 +1,5 @@
 import enum
-from typing import Dict, Union
+from typing import Mapping, Union
 
 __all__ = (
     "MName",
@@ -20,7 +20,7 @@ MSampleRate = Union[float, int]
 
 MTagKey = str
 MTagValue = Union[float, int, str]
-MTags = Dict[MTagKey, MTagValue]
+MTags = Mapping[MTagKey, MTagValue]
 
 
 @enum.unique

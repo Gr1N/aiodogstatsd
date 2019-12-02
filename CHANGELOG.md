@@ -2,6 +2,8 @@
 
 ## 0.10.0 (20XX-XX-XX)
 
+- Fixed `MTags` type to be a `Mapping` to avoid common invariance type-checking errors, #14
+
 ## 0.9.0 (2019-11-29)
 
 - Added sample rate as class attribute, for setting sample rate class-wide, #11 by @aviramha
