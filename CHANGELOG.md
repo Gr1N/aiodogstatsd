@@ -1,5 +1,7 @@
 # Changelog for aiodogstatsd
 
+## 0.11.0 (20XX-XX-XX)
+
 ## 0.10.0 (2019-12-03)
 
 - Fixed `MTags` type to be a `Mapping` to avoid common invariance type-checking errors, #14 by @JayH5
