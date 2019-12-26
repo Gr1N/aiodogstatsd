@@ -1,13 +1,8 @@
 POETRY ?= $(HOME)/.poetry/bin/poetry
 
-# Temporary we're going to use a preview version of Poetry due to lack of support of
-# Python 3.8 in stable releases.
 .PHONY: install-poetry
 install-poetry:
-	@-rm get-poetry.py
-	@curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py > get-poetry.py
-	@python get-poetry.py --preview
-	@-rm get-poetry.py
+	@curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
 
 .PHONY: install-deps
 install-deps:
