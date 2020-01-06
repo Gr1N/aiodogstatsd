@@ -6,6 +6,8 @@ An asyncio-based client for sending metrics to StatsD with support of [DogStatsD
 
 Library fully tested with [statsd_exporter](https://github.com/prometheus/statsd_exporter) and supports `gauge`, `counter`, `histogram`, `distribution` and `timing` types.
 
+Note that client by default uses 9125 port, it's a default port for [statsd_exporter](https://github.com/prometheus/statsd_exporter) and it's different from 8125 which is used by default in StatsD and [DataDog](https://www.datadoghq.com/). Just initialize the client with the proper port you need if it's different from 9125.
+
 ## Installation
 
 Just type:

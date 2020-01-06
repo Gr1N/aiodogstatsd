@@ -2,6 +2,8 @@
 
 ## 0.11.0 (20XX-XX-XX)
 
+- Updated documentation: described why 9125 port used by default, #16
+
 ## 0.10.0 (2019-12-03)
 
 - Fixed `MTags` type to be a `Mapping` to avoid common invariance type-checking errors, #14 by @JayH5
