@@ -25,7 +25,7 @@ async def handler_unauthorized(request: Request) -> HTTPResponse:
 
 
 def get_application() -> Sanic:
-    app = Sanic()
+    app = Sanic(name="aiodogstatsd")
 
     listener_setup_statsd, listener_close_statsd = aiodogstatsd.listeners_factory(
         host="0.0.0.0", port=9125, constant_tags={"whoami": "I am Batman!"}

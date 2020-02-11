@@ -1,8 +1,8 @@
-version: '2'
+version: "2"
 
 services:
   stastd_exporter:
-    image: prom/statsd-exporter:v0.8.1
+    image: prom/statsd-exporter:v0.14.1
     expose:
       - 9125
       - 9102

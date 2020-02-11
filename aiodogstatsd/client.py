@@ -56,9 +56,9 @@ class Client:
 
         self._protocol = DatagramProtocol()
 
-        self._queue: asyncio.Queue = asyncio.Queue()
+        self._queue: asyncio.Queue
         self._listen_future: asyncio.Future
-        self._listen_future_join: asyncio.Future = asyncio.Future()
+        self._listen_future_join: asyncio.Future
 
         self._read_timeout = read_timeout
         self._close_timeout = close_timeout
@@ -77,7 +77,9 @@ class Client:
             lambda: self._protocol, remote_addr=(self._host, self._port)
         )
 
+        self._queue = asyncio.Queue()
         self._listen_future = asyncio.ensure_future(self._listen())
+        self._listen_future_join = asyncio.Future()
 
     async def close(self) -> None:
         self._closing = True
@@ -247,7 +249,7 @@ class DatagramProtocol(asyncio.DatagramProtocol):
 
     def __init__(self) -> None:
         self._transport: Optional[DatagramTransport] = None
-        self._closed: asyncio.Future = asyncio.Future()
+        self._closed: asyncio.Future
 
     async def close(self) -> None:
         if self._transport is None:
@@ -258,6 +260,7 @@ class DatagramProtocol(asyncio.DatagramProtocol):
 
     def connection_made(self, transport):
         self._transport = transport
+        self._closed = asyncio.Future()
 
     def connection_lost(self, _exc):
         self._transport = None
