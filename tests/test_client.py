@@ -108,13 +108,14 @@ class TestClient:
 
     async def test_message_send_on_close(self, mocker):
         statsd_client = aiodogstatsd.Client()
+        await statsd_client.connect()
+
         mocked_queue = mocker.patch.object(statsd_client, "_queue")
         mocked_queue.empty = mocker.Mock()
         mocked_queue.empty.side_effect = [0, 1]
         mocked_queue.get = mocker.Mock()
         mocked_queue.get.side_effect = asyncio.Future
 
-        await statsd_client.connect()
         await asyncio.sleep(0)
         mocked_queue.get.assert_called_once()
         await statsd_client.close()

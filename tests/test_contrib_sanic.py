@@ -29,7 +29,7 @@ async def sanic_server(event_loop, unused_tcp_port, unused_udp_port):
     async def handler_unauthorized(request):
         raise Unauthorized("Unauthorized")
 
-    app = Sanic()
+    app = Sanic(name="aiodogstatsd")
 
     listener_setup_statsd, listener_close_statsd = aiodogstatsd.listeners_factory(
         host="0.0.0.0", port=unused_udp_port, constant_tags={"whoami": "batman"}

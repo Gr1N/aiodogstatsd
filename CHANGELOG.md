@@ -3,6 +3,8 @@
 ## 0.11.0 (20XX-XX-XX)
 
 - Updated documentation: described why 9125 port used by default, #16
+- Added [`Starlette`](https://www.starlette.io) framework integration helpers (middleware), #15
+- Fixed futures initialization. From this time futures always initialized in the same event loop, #15
 
 ## 0.10.0 (2019-12-03)
 
