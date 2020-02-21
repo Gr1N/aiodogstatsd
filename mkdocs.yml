@@ -1,0 +1,29 @@
+site_name: aiodogstatsd
+theme:
+  name: material
+
+repo_name: Gr1N/aiodogstatsd
+repo_url: https://github.com/Gr1N/aiodogstatsd
+
+extra:
+  social:
+    - type: github
+      link: https://github.com/Gr1N
+    - type: linkedin
+      link: https://linkedin.com/in/ngrishko
+
+markdown_extensions:
+  - admonition
+  - codehilite:
+      guess_lang: false
+      linenums: true
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - Usage: usage.md
+  - Frameworks:
+      - AIOHTTP: frameworks/aiohttp.md
+      - Sanic: frameworks/sanic.md
+      - Starlette: frameworks/starlette.md
