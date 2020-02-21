@@ -30,6 +30,7 @@ def cleanup_context_factory(
     constant_tags: Optional[typedefs.MTags] = None,
     read_timeout: float = 0.5,
     close_timeout: Optional[float] = None,
+    sample_rate: typedefs.MSampleRate = 1,
 ) -> Callable[[web.Application], AsyncIterator[None]]:
     async def cleanup_context(app: web.Application) -> AsyncIterator[None]:
         app[client_app_key] = Client(
@@ -39,6 +40,7 @@ def cleanup_context_factory(
             constant_tags=constant_tags,
             read_timeout=read_timeout,
             close_timeout=close_timeout,
+            sample_rate=sample_rate,
         )
         await app[client_app_key].connect()
         yield

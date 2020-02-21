@@ -6,7 +6,7 @@ An asyncio-based client for sending metrics to StatsD with support of [DogStatsD
 
 Library fully tested with [statsd_exporter](https://github.com/prometheus/statsd_exporter) and supports `gauge`, `counter`, `histogram`, `distribution` and `timing` types.
 
-Note that client by default uses 9125 port, it's a default port for [statsd_exporter](https://github.com/prometheus/statsd_exporter) and it's different from 8125 which is used by default in StatsD and [DataDog](https://www.datadoghq.com/). Just initialize the client with the proper port you need if it's different from 9125.
+`aiodogstatsd` client by default uses _9125_ port. It's a default port for [statsd_exporter](https://github.com/prometheus/statsd_exporter) and it's different from _8125_ which is used by default in StatsD and [DataDog](https://www.datadoghq.com/). Initialize the client with the proper port you need if it's different from _9125_.
 
 ## Installation
 
@@ -16,36 +16,9 @@ Just type:
 $ pip install aiodogstatsd
 ```
 
-...or if you're interested in integration with [`AIOHTTP`](https://aiohttp.readthedocs.io/), [`Sanic`](https://sanicframework.org/) or [`Starlette`](https://www.starlette.io) frameworks specify corresponding extras:
+## At a glance
 
-```sh
-$ pip install aiodogstatsd[aiohttp,sanic,starlette]
-```
-
-## Usage
-
-You can simply initialize client to send any metric you want:
-
-```python
-import asyncio
-
-import aiodogstatsd
-
-
-async def main():
-    client = aiodogstatsd.Client()
-    await client.connect()
-
-    client.increment("users.online")
-
-    await client.close()
-
-
-loop = asyncio.get_event_loop()
-loop.run_until_complete(main())
-```
-
-...or you can also use client as a context manager:
+Just simply use client as a context manager and send any metric you want:
 
 ```python
 import asyncio
@@ -55,14 +28,13 @@ import aiodogstatsd
 
 async def main():
     async with aiodogstatsd.Client() as client:
-      client.increment("users.online")
+        client.increment("users.online")
 
 
-loop = asyncio.get_event_loop()
-loop.run_until_complete(main())
+asyncio.run(main())
 ```
 
-Look at `examples/` to find more examples of library usage, e.g. integration with [`AIOHTTP`](https://aiohttp.readthedocs.io/), [`Sanic`](https://sanicframework.org/) or [`Starlette`](https://www.starlette.io) frameworks.
+Please follow [documentation](https://gr1n.github.io/aiodogstatsd) or look at [`examples/`](https://github.com/Gr1N/aiodogstatsd/tree/master/examples) directory to find more examples of library usage, e.g. integration with [`AIOHTTP`](https://aiohttp.readthedocs.io/), [`Sanic`](https://sanicframework.org/) or [`Starlette`](https://www.starlette.io) frameworks.
 
 ## Contributing
 

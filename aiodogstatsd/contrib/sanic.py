@@ -35,6 +35,7 @@ def listeners_factory(
     constant_tags: Optional[typedefs.MTags] = None,
     read_timeout: float = 0.5,
     close_timeout: Optional[float] = None,
+    sample_rate: typedefs.MSampleRate = 1,
 ) -> Tuple[ListenerCallable, ListenerCallable]:
     async def listener_setup(app: Sanic, loop: AbstractEventLoop) -> None:
         client = Client(
@@ -44,6 +45,7 @@ def listeners_factory(
             constant_tags=constant_tags,
             read_timeout=read_timeout,
             close_timeout=close_timeout,
+            sample_rate=sample_rate,
         )
         await client.connect()
 

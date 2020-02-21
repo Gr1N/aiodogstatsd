@@ -44,6 +44,7 @@ readme = "README.md"
 
 homepage = "https://github.com/Gr1N/aiodogstatsd"
 repository = "https://github.com/Gr1N/aiodogstatsd"
+documentation = "https://gr1n.github.io/aiodogstatsd"
 
 keywords = ["asyncio", "statsd", "statsd-client", "statsd-metrics", "dogstatsd"]
 
@@ -65,6 +66,7 @@ codecov = ">=2.0.15"
 flake8 = ">=3.7.6"
 flake8-bugbear = ">=18.8.0"
 isort = { version = ">=4.3.5", extras = ["pyproject"] }
+mkdocs-material = ">=4.6"
 mypy = ">=0.670"
 pytest = ">=4.3.0"
 pytest-asyncio = ">=0.10.0"

@@ -53,3 +53,11 @@ codecov:
 .PHONY: publish
 publish:
 	@$(POETRY) publish --username=$(PYPI_USERNAME) --password=$(PYPI_PASSWORD) --build
+
+.PHONY: docs-serve
+docs-serve:
+	@$(POETRY) run mkdocs serve
+
+.PHONY: docs-build
+docs-build:
+	@$(POETRY) run mkdocs build
