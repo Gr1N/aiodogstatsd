@@ -1,5 +1,7 @@
 # Changelog for aiodogstatsd
 
+## 0.12.0 (20XX-XX-XX)
+
 ## 0.11.0 (2020-02-21)
 
 - Updated documentation: described why 9125 port used by default, #16
