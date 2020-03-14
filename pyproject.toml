@@ -17,6 +17,27 @@ exclude = '''
 )/
 '''
 
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.report]
+exclude_lines = [
+  # Have to re-enable the standard pragma
+  "pragma: no cover",
+  # Don't complain about missing debug-only code:
+  "def __repr__",
+  "if self.debug",
+  # Don't complain about some magic methods:
+  "def __str__",
+  # Don't complain if tests don't hit defensive assertion code:
+  "raise AssertionError",
+  "raise NotImplementedError",
+  # Don't complain if non-runnable code isn't run:
+  "if 0:",
+  "if __name__ == .__main__.:"
+]
+ignore_errors = true
+
 [tool.isort]
 combine_as_imports = true
 default_section = "LOCALFOLDER"
@@ -62,6 +83,7 @@ starlette = { version = ">=0.13.0", optional = true }
 [tool.poetry.dev-dependencies]
 async-asgi-testclient = ">=1.4"
 black = { version = ">=18.9b0", allow-prereleases = true }
+coverage = { version = ">=5.0", extras = ["toml"] }
 flake8 = ">=3.7.6"
 flake8-bugbear = ">=18.8.0"
 isort = { version = ">=4.3.5", extras = ["pyproject"] }
