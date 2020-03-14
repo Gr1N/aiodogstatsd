@@ -44,11 +44,7 @@ lint: lint-black lint-flake8 lint-isort lint-mypy
 
 .PHONY: test
 test:
-	@$(POETRY) run pytest --cov-report term --cov-report html --cov=aiodogstatsd -vv $(opts)
-
-.PHONY: codecov
-codecov:
-	@$(POETRY) run codecov --token=$(CODECOV_TOKEN)
+	@$(POETRY) run pytest --cov-report=term --cov-report=html --cov-report=xml --cov=aiodogstatsd -vv $(opts)
 
 .PHONY: publish
 publish:
