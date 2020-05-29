@@ -54,7 +54,7 @@ skip = ".eggs,.venv,venv"
 
 [tool.poetry]
 name = "aiodogstatsd"
-version = "0.12.0"
+version = "0.13.0-alpha.0"
 description = "An asyncio-based client for sending metrics to StatsD with support of DogStatsD extension"
 authors = [
     "Nikita Grishko <gr1n@protonmail.com>"
