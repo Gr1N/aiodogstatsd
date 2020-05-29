@@ -2,6 +2,7 @@ import enum
 from typing import Mapping, Union
 
 __all__ = (
+    "CState",
     "MName",
     "MNamespace",
     "MType",
@@ -30,3 +31,10 @@ class MType(enum.Enum):
     GAUGE = "g"
     HISTOGRAM = "h"
     TIMING = "ms"
+
+
+@enum.unique
+class CState(enum.IntEnum):
+    CONNECTED = enum.auto()
+    CLOSING = enum.auto()
+    DISCONNECTED = enum.auto()

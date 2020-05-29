@@ -16,7 +16,7 @@ class Client:
         "_port",
         "_namespace",
         "_constant_tags",
-        "_closing",
+        "_state",
         "_protocol",
         "_queue",
         "_listen_future",
@@ -25,6 +25,18 @@ class Client:
         "_close_timeout",
         "_sample_rate",
     )
+
+    @property
+    def connected(self) -> bool:
+        return self._state == typedefs.CState.CONNECTED
+
+    @property
+    def closing(self) -> bool:
+        return self._state == typedefs.CState.CLOSING
+
+    @property
+    def disconnected(self) -> bool:
+        return self._state == typedefs.CState.DISCONNECTED
 
     def __init__(
         self,
@@ -52,7 +64,7 @@ class Client:
         self._namespace = namespace
         self._constant_tags = constant_tags or {}
 
-        self._closing = False
+        self._state = typedefs.CState.DISCONNECTED
 
         self._protocol = DatagramProtocol()
 
@@ -81,13 +93,17 @@ class Client:
         self._listen_future = asyncio.ensure_future(self._listen())
         self._listen_future_join = asyncio.Future()
 
+        self._state = typedefs.CState.CONNECTED
+
     async def close(self) -> None:
-        self._closing = True
+        self._state = typedefs.CState.CLOSING
 
         try:
             await asyncio.wait_for(self._close(), timeout=self._close_timeout)
         except asyncio.TimeoutError:
             pass
+
+        self._state = typedefs.CState.DISCONNECTED
 
     async def _close(self) -> None:
         await self._listen_future_join
@@ -176,7 +192,7 @@ class Client:
 
     async def _listen(self) -> None:
         try:
-            while not self._closing:
+            while self.connected:
                 await self._listen_and_send()
         finally:
             # Note that `asyncio.CancelledError` raised on app clean up
@@ -203,8 +219,8 @@ class Client:
         tags: Optional[typedefs.MTags] = None,
         sample_rate: Optional[typedefs.MSampleRate] = None,
     ) -> None:
-        # If client in closing state, then ignore any new incoming metric
-        if self._closing:
+        # Ignore any new incoming metric if client in closing or disconnected state
+        if self.closing or self.disconnected:
             return
 
         sample_rate = sample_rate or self._sample_rate

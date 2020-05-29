@@ -19,7 +19,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - uses: Gr1N/setup-poetry@v1
         with:
-          poetry-version: 1.0.0
+          poetry-version: 1.0.5
       - uses: actions/cache@v1
         with:
           path: ~/.cache/pypoetry/virtualenvs

@@ -77,7 +77,7 @@ classifiers = [
 python = "^3.6"
 
 aiohttp = { version = ">=3.0.0", optional = true }
-sanic = { version = ">=19.3.0", optional = true }
+sanic = { version = ">=20.3.0", optional = true }
 starlette = { version = ">=0.13.0", optional = true }
 
 [tool.poetry.dev-dependencies]

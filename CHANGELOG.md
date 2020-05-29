@@ -2,6 +2,9 @@
 
 ## 0.12.0 (20XX-XX-XX)
 
+- Added `connected`, `closing` and `disconnected` client properties. Can be used to check connection state of client, #23
+- Bumped minimum required `Sanic` version, #23
+
 ## 0.11.0 (2020-02-21)
 
 - Updated documentation: described why 9125 port used by default, #16

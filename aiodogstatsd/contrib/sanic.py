@@ -66,14 +66,14 @@ def middlewares_factory(
     collect_not_found: bool = False,
 ) -> Tuple[MiddlewareCallable, MiddlewareCallable]:
     async def middleware_request(request: Request) -> None:
-        request["_statsd_request_started_at"] = get_event_loop().time()
+        request.ctx._statsd_request_started_at = get_event_loop().time()
 
     async def middleware_response(request: Request, response: HTTPResponse) -> None:
         if _proceed_collecting(
             request, response, collect_not_allowed, collect_not_found
         ):
             request_duration = (
-                get_event_loop().time() - request["_statsd_request_started_at"]
+                get_event_loop().time() - request.ctx._statsd_request_started_at
             ) * 1000
             getattr(request.app, client_app_key).timing(
                 request_duration_metric_name,
