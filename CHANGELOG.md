@@ -1,6 +1,6 @@
 # Changelog for aiodogstatsd
 
-## 0.12.0 (20XX-XX-XX)
+## 0.12.0 (2020-05-29)
 
 - Added `connected`, `closing` and `disconnected` client properties. Can be used to check connection state of client, #23
 - Bumped minimum required `Sanic` version, #23
