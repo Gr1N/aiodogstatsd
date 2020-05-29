@@ -7,9 +7,9 @@ repo_url: https://github.com/Gr1N/aiodogstatsd
 
 extra:
   social:
-    - type: github
+    - icon: fontawesome/brands/github
       link: https://github.com/Gr1N
-    - type: linkedin
+    - icon: fontawesome/brands/linkedin
       link: https://linkedin.com/in/ngrishko
 
 markdown_extensions:
