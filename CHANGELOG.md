@@ -1,5 +1,7 @@
 # Changelog for aiodogstatsd
 
+## 0.14.0 (20XX-XX-XX)
+
 ## 0.13.0 (2020-07-29)
 
 - Added configuration option to limit pending queue size. Can be configured by passing `pending_queue_size` named argument into `aiodogstatsd.Client` class. By default: `65536`, #24
