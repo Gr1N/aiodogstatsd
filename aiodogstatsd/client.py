@@ -18,7 +18,8 @@ class Client:
         "_constant_tags",
         "_state",
         "_protocol",
-        "_queue",
+        "_pending_queue",
+        "_pending_queue_size",
         "_listen_future",
         "_listen_future_join",
         "_read_timeout",
@@ -48,6 +49,7 @@ class Client:
         read_timeout: float = 0.5,
         close_timeout: Optional[float] = None,
         sample_rate: typedefs.MSampleRate = 1,
+        pending_queue_size: int = 2 ** 16,
     ) -> None:
         """
         Initialize a client object.
@@ -68,7 +70,9 @@ class Client:
 
         self._protocol = DatagramProtocol()
 
-        self._queue: asyncio.Queue
+        self._pending_queue: asyncio.Queue
+        self._pending_queue_size = pending_queue_size
+
         self._listen_future: asyncio.Future
         self._listen_future_join: asyncio.Future
 
@@ -89,7 +93,7 @@ class Client:
             lambda: self._protocol, remote_addr=(self._host, self._port)
         )
 
-        self._queue = asyncio.Queue()
+        self._pending_queue = asyncio.Queue(maxsize=self._pending_queue_size)
         self._listen_future = asyncio.ensure_future(self._listen())
         self._listen_future_join = asyncio.Future()
 
@@ -197,12 +201,12 @@ class Client:
         finally:
             # Note that `asyncio.CancelledError` raised on app clean up
             # Try to send remaining enqueued metrics if any
-            while not self._queue.empty():
+            while not self._pending_queue.empty():
                 await self._listen_and_send()
             self._listen_future_join.set_result(True)
 
     async def _listen_and_send(self) -> None:
-        coro = self._queue.get()
+        coro = self._pending_queue.get()
 
         try:
             buf = await asyncio.wait_for(coro, timeout=self._read_timeout)
@@ -230,17 +234,21 @@ class Client:
         # Resolve full tags list
         all_tags = dict(self._constant_tags, **tags or {})
 
-        # Build and enqueue metric
-        self._queue.put_nowait(
-            protocol.build(
-                name=name,
-                namespace=self._namespace,
-                value=value,
-                type_=type_,
-                tags=all_tags,
-                sample_rate=sample_rate,
-            )
+        # Build metric
+        metric = protocol.build(
+            name=name,
+            namespace=self._namespace,
+            value=value,
+            type_=type_,
+            tags=all_tags,
+            sample_rate=sample_rate,
         )
+
+        # Enqueue metric
+        try:
+            self._pending_queue.put_nowait(metric)
+        except asyncio.QueueFull:
+            pass
 
     @contextmanager
     def timeit(

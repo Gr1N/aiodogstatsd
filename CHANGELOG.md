@@ -2,6 +2,8 @@
 
 ## 0.13.0 (20XX-XX-XX)
 
+- Added configuration option to limit pending queue size. Can be configured by passing `pending_queue_size` named argument into `aiodogstatsd.Client` class. By default: `65536`, #24
+
 ## 0.12.0 (2020-05-29)
 
 - Added `connected`, `closing` and `disconnected` client properties. Can be used to check connection state of client, #23
