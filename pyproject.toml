@@ -40,15 +40,7 @@ ignore_errors = true
 
 [tool.isort]
 combine_as_imports = true
-default_section = "LOCALFOLDER"
-force_grid_wrap = false
-include_trailing_comma = true
-known_first_party = "aiodogstatsd"
-known_standard_library = ""
-known_third_party = ""
-line_length = 88
-multi_line_output = 3
-not_skip = "__init__.py"
+profile = "black"
 sections = "FUTURE,STDLIB,THIRDPARTY,FIRSTPARTY,LOCALFOLDER"
 skip = ".eggs,.venv,venv"
 
@@ -86,7 +78,7 @@ black = { version = ">=18.9b0", allow-prereleases = true }
 coverage = { version = ">=5.0", extras = ["toml"] }
 flake8 = ">=3.7.6"
 flake8-bugbear = ">=18.8.0"
-isort = { version = ">=4.3.5", extras = ["pyproject"] }
+isort = ">=5.2"
 mkdocs-material = ">=4.6"
 mypy = ">=0.670"
 pytest = ">=4.3.0"
