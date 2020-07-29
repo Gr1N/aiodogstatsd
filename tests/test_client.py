@@ -88,7 +88,7 @@ class TestClient:
         assert collected == [b"test_timing:42|ms|#whoami:batman,and:robin"]
 
     async def test_skip_if_sample_rate(self, mocker, statsd_client_samplerate):
-        mocked_queue = mocker.patch.object(statsd_client_samplerate, "_queue")
+        mocked_queue = mocker.patch.object(statsd_client_samplerate, "_pending_queue")
 
         statsd_client_samplerate.increment("test_sample_rate_1", sample_rate=1)
         mocked_queue.put_nowait.assert_called_once_with(
@@ -110,7 +110,7 @@ class TestClient:
         statsd_client = aiodogstatsd.Client()
         await statsd_client.connect()
 
-        mocked_queue = mocker.patch.object(statsd_client, "_queue")
+        mocked_queue = mocker.patch.object(statsd_client, "_pending_queue")
         mocked_queue.empty = mocker.Mock()
         mocked_queue.empty.side_effect = [0, 1]
         mocked_queue.get = mocker.Mock()
@@ -128,7 +128,7 @@ class TestClient:
         await statsd_client.connect()
         await statsd_client.close()
 
-        mocked_queue = mocker.patch.object(statsd_client, "_queue")
+        mocked_queue = mocker.patch.object(statsd_client, "_pending_queue")
         statsd_client.increment("test_closing")
         mocked_queue.assert_not_called()
 
