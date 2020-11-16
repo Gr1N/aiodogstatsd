@@ -3,6 +3,7 @@
 ## 0.14.0 (20XX-XX-XX)
 
 - Added Python 3.9.* support
+- Fixed `.timeit()` in case of unhandled exceptions, #26
 
 ## 0.13.0 (2020-07-29)
 

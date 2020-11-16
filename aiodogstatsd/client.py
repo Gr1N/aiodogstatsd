@@ -263,9 +263,12 @@ class Client:
         """
         loop = get_event_loop()
         started_at = loop.time()
-        yield
-        value = (loop.time() - started_at) * 1000
-        self.timing(name, value=int(value), tags=tags, sample_rate=sample_rate)
+
+        try:
+            yield
+        finally:
+            value = (loop.time() - started_at) * 1000
+            self.timing(name, value=int(value), tags=tags, sample_rate=sample_rate)
 
 
 class DatagramProtocol(asyncio.DatagramProtocol):
