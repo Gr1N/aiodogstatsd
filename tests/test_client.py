@@ -10,7 +10,9 @@ pytestmark = pytest.mark.asyncio
 @pytest.fixture
 async def statsd_client(unused_udp_port):
     client = aiodogstatsd.Client(
-        host="0.0.0.0", port=unused_udp_port, constant_tags={"whoami": "batman"},
+        host="0.0.0.0",
+        port=unused_udp_port,
+        constant_tags={"whoami": "batman"},
     )
     await client.connect()
     yield client

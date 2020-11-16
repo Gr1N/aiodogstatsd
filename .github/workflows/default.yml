@@ -8,19 +8,19 @@ jobs:
 
     strategy:
       matrix:
-        python-version: [3.6, 3.7, 3.8]
+        python-version: [3.6, 3.7, 3.8, 3.9]
 
       fail-fast: true
 
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v1
+      - uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
       - uses: Gr1N/setup-poetry@v1
         with:
-          poetry-version: 1.0.5
-      - uses: actions/cache@v1
+          poetry-version: 1.1.4
+      - uses: actions/cache@v2
         with:
           path: ~/.cache/pypoetry/virtualenvs
           key: ${{ runner.os }}-${{ matrix.python-version }}-poetry-${{ hashFiles('pyproject.toml') }}
@@ -28,9 +28,9 @@ jobs:
             ${{ runner.os }}-${{ matrix.python-version }}-poetry-
       - run: make install-deps
       - run: make lint
-        if: matrix.python-version == 3.8
+        if: matrix.python-version == 3.9
       - run: make test
       - uses: codecov/codecov-action@v1
-        if: matrix.python-version == 3.8
+        if: matrix.python-version == 3.9
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
