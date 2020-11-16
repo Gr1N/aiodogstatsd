@@ -1,6 +1,6 @@
 # Changelog for aiodogstatsd
 
-## 0.14.0 (20XX-XX-XX)
+## 0.14.0 (2020-11-16)
 
 - Added Python 3.9.* support
 - Fixed `.timeit()` in case of unhandled exceptions, #26
