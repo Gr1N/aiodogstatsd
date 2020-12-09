@@ -257,6 +257,7 @@ class Client:
         *,
         tags: Optional[typedefs.MTags] = None,
         sample_rate: Optional[typedefs.MSampleRate] = None,
+        threshold_ms: Optional[typedefs.MValue] = None,
     ) -> Iterator[None]:
         """
         Context manager for easily timing methods.
@@ -268,7 +269,8 @@ class Client:
             yield
         finally:
             value = (loop.time() - started_at) * 1000
-            self.timing(name, value=int(value), tags=tags, sample_rate=sample_rate)
+            if not threshold_ms or value > threshold_ms:
+                self.timing(name, value=int(value), tags=tags, sample_rate=sample_rate)
 
 
 class DatagramProtocol(asyncio.DatagramProtocol):

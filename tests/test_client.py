@@ -153,6 +153,14 @@ class TestClient:
         loop.return_value.time.return_value = 1.0
         with statsd_client.timeit("test_timer", tags={"and": "robin"}):
             loop.return_value.time.return_value = 2.0
+
+        # This shouldn't be logged.
+        loop.return_value.time.return_value = 1.0
+        with statsd_client.timeit(
+            "test_timer", tags={"and": "robin"}, threshold_ms=3000.0
+        ):
+            loop.return_value.time.return_value = 2.0
+
         async with udp_server:
             await wait_for(collected)
         assert collected == [b"test_timer:1000|ms|#whoami:batman,and:robin"]
