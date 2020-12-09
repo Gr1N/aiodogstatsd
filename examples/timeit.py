@@ -9,6 +9,7 @@ async def main():
     )
     await client.connect()
 
+    # Use threshold_ms for setting a threshold for sending the timing metric.
     with client.timeit("fire"):
         # Do action we want to time
         pass
