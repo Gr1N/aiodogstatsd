@@ -93,9 +93,19 @@ client.timing("query.time", value=0.5)
 
 ### TimeIt
 
-Context manager for easily timing methods, optionally settings `tags` and a `sample_rate`.
+Context manager for easily timing methods, optionally settings `tags`, `sample_rate` and `threshold_ms`.
 
 ```python
 with client.timeit("query.time"):
     ...
+```
+
+### timeit_task
+
+Wrapper for `asyncio.create_task` that creates a task from a given `Awaitable` and sends timing metric of it's duration.
+
+```python
+async def do_something():
+    await asyncio.sleep(1.0)
+await client.timeit_task(do_something(), "task.time")
 ```

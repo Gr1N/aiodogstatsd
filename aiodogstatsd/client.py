@@ -2,12 +2,14 @@ import asyncio
 from asyncio.transports import DatagramTransport
 from contextlib import contextmanager
 from random import random
-from typing import Iterator, Optional
+from typing import Any, Awaitable, Iterator, Optional, TypeVar
 
 from aiodogstatsd import protocol, typedefs
 from aiodogstatsd.compat import get_event_loop
 
 __all__ = ("Client",)
+
+_T = TypeVar("_T")
 
 
 class Client:
@@ -271,6 +273,32 @@ class Client:
             value = (loop.time() - started_at) * 1000
             if not threshold_ms or value > threshold_ms:
                 self.timing(name, value=int(value), tags=tags, sample_rate=sample_rate)
+
+    def timeit_task(
+        self,
+        coro: Awaitable[_T],
+        name: typedefs.MName,
+        *,
+        tags: Optional[typedefs.MTags] = None,
+        sample_rate: Optional[typedefs.MSampleRate] = None,
+        threshold_ms: Optional[typedefs.MValue] = None,
+    ) -> "asyncio.Task[_T]":
+        """
+        Creates a task and returns it, adds a done callback for
+            sending time metric when done and if exceeds threshold.
+        """
+        loop = get_event_loop()
+        started_at = loop.time()
+
+        def _callback(_: Any) -> None:
+            duration = (loop.time() - started_at) * 1000
+            if threshold_ms and duration < threshold_ms:
+                return
+            self.timing(name, value=int(duration), tags=tags, sample_rate=sample_rate)
+
+        task = loop.create_task(coro)
+        task.add_done_callback(_callback)
+        return task
 
 
 class DatagramProtocol(asyncio.DatagramProtocol):
