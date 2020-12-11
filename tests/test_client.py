@@ -164,3 +164,32 @@ class TestClient:
         async with udp_server:
             await wait_for(collected)
         assert collected == [b"test_timer:1000|ms|#whoami:batman,and:robin"]
+
+    async def test_timeit_task(self, statsd_client, statsd_server, wait_for, mocker):
+        udp_server, collected = statsd_server
+
+        async def do_nothing():
+            pass
+
+        loop = mocker.patch("aiodogstatsd.client.get_event_loop")
+        loop.return_value.create_task = asyncio.get_event_loop().create_task
+
+        # Metric will be sent
+        loop.return_value.time.return_value = 1.0
+        task = statsd_client.timeit_task(
+            do_nothing(), "test_timer", tags={"and": "robin"}, threshold_ms=500
+        )
+        loop.return_value.time.return_value = 2.0
+        await task
+
+        # Metric wont be sent because of not meeting the threshold
+        loop.return_value.time.return_value = 1.0
+        task = statsd_client.timeit_task(
+            do_nothing(), "test_timer", tags={"and": "robin"}, threshold_ms=1100
+        )
+        loop.return_value.time.return_value = 2.0
+        await task
+
+        async with udp_server:
+            await wait_for(collected)
+        assert collected == [b"test_timer:1000|ms|#whoami:batman,and:robin"]

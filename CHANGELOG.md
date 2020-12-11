@@ -1,7 +1,8 @@
 # Changelog for aiodogstatsd
 
 ## 0.15.0 (20XX-XX-XX)
-
+- Added `.timeit_task()`, `asyncio.create_task` like function that sends timing metric when the task finishes, #29 by @aviramha
+- Added `threshold_ms` (Optional) to `.timeit()` for sending timing metric only when exceeds threshold, #27 by @aviramha
 ## 0.14.0 (2020-11-16)
 
 - Added Python 3.9.* support
