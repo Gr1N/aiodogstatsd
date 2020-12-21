@@ -284,8 +284,8 @@ class Client:
         threshold_ms: Optional[typedefs.MValue] = None,
     ) -> "asyncio.Task[_T]":
         """
-        Creates a task and returns it, adds a done callback for
-            sending time metric when done and if exceeds threshold.
+        Creates a task and returns it, adds a done callback for sending time metric when
+        done and if exceeds threshold.
         """
         loop = get_event_loop()
         started_at = loop.time()
