@@ -10,7 +10,7 @@
       
       
       <link rel="shortcut icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.1.5">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.1.7">
     
     
       
@@ -18,7 +18,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.21aed14c.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.19753c6b.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.196e0c26.min.css">
@@ -300,6 +300,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#timeit_task" class="md-nav__link">
+    timeit_task
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -467,6 +474,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#timeit_task" class="md-nav__link">
+    timeit_task
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -572,10 +586,19 @@
 </code></pre></div>
 </td></tr></table>
 <h3 id="timeit">TimeIt<a class="headerlink" href="#timeit" title="Permanent link">&para;</a></h3>
-<p>Context manager for easily timing methods, optionally settings <code>tags</code> and a <code>sample_rate</code>.</p>
+<p>Context manager for easily timing methods, optionally settings <code>tags</code>, <code>sample_rate</code> and <code>threshold_ms</code>.</p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="k">with</span> <span class="n">client</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s2">&quot;query.time&quot;</span><span class="p">):</span>
     <span class="o">...</span>
+</code></pre></div>
+</td></tr></table>
+<h3 id="timeit_task">timeit_task<a class="headerlink" href="#timeit_task" title="Permanent link">&para;</a></h3>
+<p>Wrapper for <code>asyncio.create_task</code> that creates a task from a given <code>Awaitable</code> and sends timing metric of it's duration.</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">do_something</span><span class="p">():</span>
+    <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">timeit_task</span><span class="p">(</span><span class="n">do_something</span><span class="p">(),</span> <span class="s2">&quot;task.time&quot;</span><span class="p">)</span>
 </code></pre></div>
 </td></tr></table>
                 
@@ -666,8 +689,8 @@
       
     </div>
     
-      <script src="../assets/javascripts/vendor.7e0ee788.min.js"></script>
-      <script src="../assets/javascripts/bundle.b3a72adc.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      <script src="../assets/javascripts/vendor.0ac82a11.min.js"></script>
+      <script src="../assets/javascripts/bundle.f81dfb4d.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
       
       <script>
         app = initialize({
