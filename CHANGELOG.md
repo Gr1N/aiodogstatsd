@@ -1,5 +1,7 @@
 # Changelog for aiodogstatsd
 
+## 0.16.0 (20XX-XX-XX)
+
 ## 0.15.0 (2020-12-21)
 
 - Added `.timeit_task()`, `asyncio.create_task` like function that sends timing metric when the task finishes, #29 by @aviramha
