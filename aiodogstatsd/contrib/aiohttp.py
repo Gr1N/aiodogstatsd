@@ -2,8 +2,16 @@ from http import HTTPStatus
 from typing import AsyncIterator, Callable, Optional, cast
 
 from aiohttp import web
-from aiohttp.web_app import _Middleware
-from aiohttp.web_routedef import _SimpleHandler
+try:
+    from aiohttp.typedefs import Middleware
+except ImportError:
+    # aiohttp < 3.8.0
+    from aiohttp.web_app import _Middleware as Middleware
+try:
+    from aiohttp.typedefs import Handler
+except ImportError:
+    # aiohttp < 3.8.0
+    from aiohttp.web_routedef import _SimpleHandler as Handler
 from aiohttp.web_urldispatcher import DynamicResource, MatchInfoError
 
 from aiodogstatsd import Client, typedefs
@@ -55,10 +63,10 @@ def middleware_factory(
     request_duration_metric_name: str = DEAFULT_REQUEST_DURATION_METRIC_NAME,
     collect_not_allowed: bool = False,
     collect_not_found: bool = False,
-) -> _Middleware:
+) -> Middleware:
     @web.middleware
     async def middleware(
-        request: web.Request, handler: _SimpleHandler
+        request: web.Request, handler: Handler
     ) -> web.StreamResponse:
         loop = get_event_loop()
         request_started_at = loop.time()
