@@ -6,7 +6,7 @@ __all__ = (
     "MName",
     "MNamespace",
     "MType",
-    "MNumericValue",
+    "MDisplayValue",
     "MValue",
     "MSampleRate",
     "MTagKey",
@@ -17,8 +17,8 @@ __all__ = (
 
 MName = str
 MNamespace = str
-MValue = Union[float, int, str]
-MNumericValue = Union[float, int]
+MDisplayValue = Union[float, int, str]
+MValue = Union[float, int]
 MSampleRate = Union[float, int]
 
 MTagKey = str

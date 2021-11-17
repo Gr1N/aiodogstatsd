@@ -9,7 +9,7 @@ def build(
     *,
     name: typedefs.MName,
     namespace: Optional[typedefs.MNamespace],
-    value: typedefs.MValue,
+    value: typedefs.MDisplayValue,
     type_: typedefs.MType,
     tags: typedefs.MTags,
     sample_rate: typedefs.MSampleRate,

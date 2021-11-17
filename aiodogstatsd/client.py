@@ -121,7 +121,7 @@ class Client:
         self,
         name: typedefs.MName,
         *,
-        value: typedefs.MNumericValue,
+        value: typedefs.MValue,
         tags: Optional[typedefs.MTags] = None,
         sample_rate: Optional[typedefs.MSampleRate] = None,
     ) -> None:
@@ -134,7 +134,7 @@ class Client:
         self,
         name: typedefs.MName,
         *,
-        value: typedefs.MValue,
+        value: typedefs.MDisplayValue,
         tags: Optional[typedefs.MTags] = None,
         sample_rate: Optional[typedefs.MSampleRate] = None,
     ) -> None:
@@ -147,7 +147,7 @@ class Client:
         self,
         name: typedefs.MName,
         *,
-        value: typedefs.MNumericValue = 1,
+        value: typedefs.MValue = 1,
         tags: Optional[typedefs.MTags] = None,
         sample_rate: Optional[typedefs.MSampleRate] = None,
     ) -> None:
@@ -160,7 +160,7 @@ class Client:
         self,
         name: typedefs.MName,
         *,
-        value: typedefs.MNumericValue = 1,
+        value: typedefs.MValue = 1,
         tags: Optional[typedefs.MTags] = None,
         sample_rate: Optional[typedefs.MSampleRate] = None,
     ) -> None:
@@ -174,7 +174,7 @@ class Client:
         self,
         name: typedefs.MName,
         *,
-        value: typedefs.MNumericValue,
+        value: typedefs.MValue,
         tags: Optional[typedefs.MTags] = None,
         sample_rate: Optional[typedefs.MSampleRate] = None,
     ) -> None:
@@ -187,7 +187,7 @@ class Client:
         self,
         name: typedefs.MName,
         *,
-        value: typedefs.MNumericValue,
+        value: typedefs.MValue,
         tags: Optional[typedefs.MTags] = None,
         sample_rate: Optional[typedefs.MSampleRate] = None,
     ) -> None:
@@ -200,7 +200,7 @@ class Client:
         self,
         name: typedefs.MName,
         *,
-        value: typedefs.MNumericValue,
+        value: typedefs.MValue,
         tags: Optional[typedefs.MTags] = None,
         sample_rate: Optional[typedefs.MSampleRate] = None,
     ) -> None:
@@ -234,7 +234,7 @@ class Client:
         self,
         name: typedefs.MName,
         type_: typedefs.MType,
-        value: typedefs.MValue,
+        value: typedefs.MDisplayValue,
         tags: Optional[typedefs.MTags] = None,
         sample_rate: Optional[typedefs.MSampleRate] = None,
     ) -> None:
@@ -272,7 +272,7 @@ class Client:
         *,
         tags: Optional[typedefs.MTags] = None,
         sample_rate: Optional[typedefs.MSampleRate] = None,
-        threshold_ms: Optional[typedefs.MNumericValue] = None,
+        threshold_ms: Optional[typedefs.MValue] = None,
     ) -> Iterator[None]:
         """
         Context manager for easily timing methods.
@@ -294,7 +294,7 @@ class Client:
         *,
         tags: Optional[typedefs.MTags] = None,
         sample_rate: Optional[typedefs.MSampleRate] = None,
-        threshold_ms: Optional[typedefs.MNumericValue] = None,
+        threshold_ms: Optional[typedefs.MValue] = None,
     ) -> "asyncio.Task[_T]":
         """
         Creates a task and returns it, adds a done callback for sending time metric when
