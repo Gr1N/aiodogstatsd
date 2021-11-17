@@ -42,6 +42,15 @@ class TestClient:
 
         assert collected == [b"test_gauge:42|g|#whoami:batman,and:robin"]
 
+    async def test_set(self, statsd_client, statsd_server, wait_for):
+        udp_server, collected = statsd_server
+
+        async with udp_server:
+            statsd_client.set("test_set", value="hello", tags={"and": "robin"})
+            await wait_for(collected)
+
+        assert collected == [b"test_set:hello|s|#whoami:batman,and:robin"]
+
     async def test_increment(self, statsd_client, statsd_server, wait_for):
         udp_server, collected = statsd_server
 
