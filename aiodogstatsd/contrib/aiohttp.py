@@ -2,8 +2,14 @@ from http import HTTPStatus
 from typing import AsyncIterator, Callable, Optional, cast
 
 from aiohttp import web
-from aiohttp.typedefs import Handler
 from aiohttp.web_app import _Middleware
+
+try:
+    from aiohttp.typedefs import Handler
+except ImportError:
+    # aiohttp < 3.8.0
+    from aiohttp.web_routedef import _SimpleHandler as Handler  # type: ignore
+
 from aiohttp.web_urldispatcher import DynamicResource, MatchInfoError
 
 from aiodogstatsd import Client, typedefs
