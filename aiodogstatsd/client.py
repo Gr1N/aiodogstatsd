@@ -121,7 +121,7 @@ class Client:
         self,
         name: typedefs.MName,
         *,
-        value: typedefs.MValue,
+        value: typedefs.MNumericValue,
         tags: Optional[typedefs.MTags] = None,
         sample_rate: Optional[typedefs.MSampleRate] = None,
     ) -> None:
@@ -130,11 +130,24 @@ class Client:
         """
         self._report(name, typedefs.MType.GAUGE, value, tags, sample_rate)
 
+    def set(
+        self,
+        name: typedefs.MName,
+        *,
+        value: typedefs.MValue,
+        tags: Optional[typedefs.MTags] = None,
+        sample_rate: Optional[typedefs.MSampleRate] = None,
+    ) -> None:
+        """
+        Add a value to a set, optionally setting tags and a sample rate.
+        """
+        self._report(name, typedefs.MType.SET, value, tags, sample_rate)
+
     def increment(
         self,
         name: typedefs.MName,
         *,
-        value: typedefs.MValue = 1,
+        value: typedefs.MNumericValue = 1,
         tags: Optional[typedefs.MTags] = None,
         sample_rate: Optional[typedefs.MSampleRate] = None,
     ) -> None:
@@ -147,7 +160,7 @@ class Client:
         self,
         name: typedefs.MName,
         *,
-        value: typedefs.MValue = 1,
+        value: typedefs.MNumericValue = 1,
         tags: Optional[typedefs.MTags] = None,
         sample_rate: Optional[typedefs.MSampleRate] = None,
     ) -> None:
@@ -161,7 +174,7 @@ class Client:
         self,
         name: typedefs.MName,
         *,
-        value: typedefs.MValue,
+        value: typedefs.MNumericValue,
         tags: Optional[typedefs.MTags] = None,
         sample_rate: Optional[typedefs.MSampleRate] = None,
     ) -> None:
@@ -174,7 +187,7 @@ class Client:
         self,
         name: typedefs.MName,
         *,
-        value: typedefs.MValue,
+        value: typedefs.MNumericValue,
         tags: Optional[typedefs.MTags] = None,
         sample_rate: Optional[typedefs.MSampleRate] = None,
     ) -> None:
@@ -187,7 +200,7 @@ class Client:
         self,
         name: typedefs.MName,
         *,
-        value: typedefs.MValue,
+        value: typedefs.MNumericValue,
         tags: Optional[typedefs.MTags] = None,
         sample_rate: Optional[typedefs.MSampleRate] = None,
     ) -> None:
@@ -259,7 +272,7 @@ class Client:
         *,
         tags: Optional[typedefs.MTags] = None,
         sample_rate: Optional[typedefs.MSampleRate] = None,
-        threshold_ms: Optional[typedefs.MValue] = None,
+        threshold_ms: Optional[typedefs.MNumericValue] = None,
     ) -> Iterator[None]:
         """
         Context manager for easily timing methods.
@@ -281,7 +294,7 @@ class Client:
         *,
         tags: Optional[typedefs.MTags] = None,
         sample_rate: Optional[typedefs.MSampleRate] = None,
-        threshold_ms: Optional[typedefs.MValue] = None,
+        threshold_ms: Optional[typedefs.MNumericValue] = None,
     ) -> "asyncio.Task[_T]":
         """
         Creates a task and returns it, adds a done callback for sending time metric when

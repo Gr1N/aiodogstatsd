@@ -6,6 +6,7 @@ __all__ = (
     "MName",
     "MNamespace",
     "MType",
+    "MNumericValue",
     "MValue",
     "MSampleRate",
     "MTagKey",
@@ -16,7 +17,8 @@ __all__ = (
 
 MName = str
 MNamespace = str
-MValue = Union[float, int]
+MValue = Union[float, int, str]
+MNumericValue = Union[float, int]
 MSampleRate = Union[float, int]
 
 MTagKey = str
@@ -31,6 +33,7 @@ class MType(enum.Enum):
     GAUGE = "g"
     HISTOGRAM = "h"
     TIMING = "ms"
+    SET = "s"
 
 
 @enum.unique
