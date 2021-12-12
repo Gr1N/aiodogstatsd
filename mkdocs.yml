@@ -14,11 +14,15 @@ extra:
 
 markdown_extensions:
   - admonition
-  - codehilite:
-      guess_lang: false
-      linenums: true
   - toc:
       permalink: true
+  - tables
+  - pymdownx.highlight:
+      linenums: true
+      linenums_style: pymdownx.inline
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.snippets
 
 nav:
   - Home: index.md
