@@ -2,6 +2,10 @@
 
 ## 0.16.0 (20XX-XX-XX)
 
+- Added Python 3.10.* support
+- Dropped Sanic support
+- Fixed AIOHTTP support, #30
+
 ## 0.15.0 (2020-12-21)
 
 - Added `.timeit_task()`, `asyncio.create_task` like function that sends timing metric when the task finishes, #29 by @aviramha
