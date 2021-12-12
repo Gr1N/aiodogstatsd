@@ -16,12 +16,6 @@ jobs:
       - uses: Gr1N/setup-poetry@v7
         with:
           poetry-version: 1.1.12
-      - uses: actions/cache@v2
-        with:
-          path: ~/.cache/pypoetry/virtualenvs
-          key: ${{ runner.os }}-3.9-poetry-${{ hashFiles('pyproject.toml') }}
-          restore-keys: |
-            ${{ runner.os }}-3.9-poetry-
       - run: make install-deps
       - run: make docs-build
       - uses: peaceiris/actions-gh-pages@v2
@@ -41,12 +35,6 @@ jobs:
       - uses: Gr1N/setup-poetry@v7
         with:
           poetry-version: 1.1.12
-      - uses: actions/cache@v2
-        with:
-          path: ~/.cache/pypoetry/virtualenvs
-          key: ${{ runner.os }}-3.9-poetry-${{ hashFiles('pyproject.toml') }}
-          restore-keys: |
-            ${{ runner.os }}-3.9-poetry-
       - run: make install-deps
       - run: make publish
         env:
