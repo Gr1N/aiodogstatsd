@@ -17,10 +17,10 @@ Just type:
 pip install aiodogstatsd
 ```
 
-...or if you're interested in integration with [`AIOHTTP`](https://aiohttp.readthedocs.io/), [`Sanic`](https://sanicframework.org/) or [`Starlette`](https://www.starlette.io) frameworks specify corresponding extras:
+...or if you're interested in integration with [`AIOHTTP`](https://aiohttp.readthedocs.io/) or [`Starlette`](https://www.starlette.io) frameworks specify corresponding extras:
 
 ```sh
-pip install aiodogstatsd[aiohttp,sanic,starlette]
+pip install aiodogstatsd[aiohttp,starlette]
 ```
 
 ## At a glance

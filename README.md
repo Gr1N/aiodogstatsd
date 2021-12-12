@@ -34,7 +34,7 @@ async def main():
 asyncio.run(main())
 ```
 
-Please follow [documentation](https://gr1n.github.io/aiodogstatsd) or look at [`examples/`](https://github.com/Gr1N/aiodogstatsd/tree/master/examples) directory to find more examples of library usage, e.g. integration with [`AIOHTTP`](https://aiohttp.readthedocs.io/), [`Sanic`](https://sanicframework.org/) or [`Starlette`](https://www.starlette.io) frameworks.
+Please follow [documentation](https://gr1n.github.io/aiodogstatsd) or look at [`examples/`](https://github.com/Gr1N/aiodogstatsd/tree/master/examples) directory to find more examples of library usage, e.g. integration with [`AIOHTTP`](https://aiohttp.readthedocs.io/) or [`Starlette`](https://www.starlette.io) frameworks.
 
 ## Contributing
 
