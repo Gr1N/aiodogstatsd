@@ -1,6 +1,6 @@
 # Changelog for aiodogstatsd
 
-## 0.16.0 (20XX-XX-XX)
+## 0.16.0 (2021-12-12)
 
 - Added Python 3.10.* support
 - Dropped Sanic support
