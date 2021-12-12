@@ -1,4 +1,5 @@
 from http import HTTPStatus
+from uuid import uuid4
 
 import aiohttp
 import pytest
@@ -29,7 +30,7 @@ async def sanic_server(event_loop, unused_tcp_port, unused_udp_port):
     async def handler_unauthorized(request):
         raise Unauthorized("Unauthorized")
 
-    app = Sanic(name="aiodogstatsd")
+    app = Sanic(name=uuid4().hex)
 
     listener_setup_statsd, listener_close_statsd = aiodogstatsd.listeners_factory(
         host="0.0.0.0", port=unused_udp_port, constant_tags={"whoami": "batman"}

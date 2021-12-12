@@ -1,9 +1,7 @@
 from http import HTTPStatus
-from typing import AsyncIterator, Callable, Optional, cast
+from typing import AsyncIterator, Awaitable, Callable, Optional, cast
 
 from aiohttp import web
-from aiohttp.web_app import _Middleware
-from aiohttp.web_routedef import _SimpleHandler
 from aiohttp.web_urldispatcher import DynamicResource, MatchInfoError
 
 from aiodogstatsd import Client, typedefs
@@ -19,6 +17,10 @@ __all__ = (
 
 DEFAULT_CLIENT_APP_KEY = "statsd"
 DEAFULT_REQUEST_DURATION_METRIC_NAME = "http_request_duration"
+
+
+_THandler = Callable[[web.Request], Awaitable[web.StreamResponse]]
+_TMiddleware = Callable[[web.Request, _THandler], Awaitable[web.StreamResponse]]
 
 
 def cleanup_context_factory(
@@ -55,10 +57,10 @@ def middleware_factory(
     request_duration_metric_name: str = DEAFULT_REQUEST_DURATION_METRIC_NAME,
     collect_not_allowed: bool = False,
     collect_not_found: bool = False,
-) -> _Middleware:
+) -> _TMiddleware:
     @web.middleware
     async def middleware(
-        request: web.Request, handler: _SimpleHandler
+        request: web.Request, handler: _THandler
     ) -> web.StreamResponse:
         loop = get_event_loop()
         request_started_at = loop.time()
