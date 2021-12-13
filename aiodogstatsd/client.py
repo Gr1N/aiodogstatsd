@@ -130,6 +130,19 @@ class Client:
         """
         self._report(name, typedefs.MType.GAUGE, value, tags, sample_rate)
 
+    def set(
+        self,
+        name: typedefs.MName,
+        *,
+        value: typedefs.MDisplayValue,
+        tags: Optional[typedefs.MTags] = None,
+        sample_rate: Optional[typedefs.MSampleRate] = None,
+    ) -> None:
+        """
+        Add a value to a set, optionally setting tags and a sample rate.
+        """
+        self._report(name, typedefs.MType.SET, value, tags, sample_rate)
+
     def increment(
         self,
         name: typedefs.MName,
@@ -221,7 +234,7 @@ class Client:
         self,
         name: typedefs.MName,
         type_: typedefs.MType,
-        value: typedefs.MValue,
+        value: typedefs.MDisplayValue,
         tags: Optional[typedefs.MTags] = None,
         sample_rate: Optional[typedefs.MSampleRate] = None,
     ) -> None:
